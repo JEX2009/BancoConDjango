@@ -10,8 +10,17 @@
 <body>
     <header>{% extends 'layout/lateral.html' %}</header>
     {% block content %}
-    <h1>Aca balance
-    </h1>
+    <a href="{% url 'sobres' %}">Volver</a>
+
+    <form action="{% url 'sobreCreado' %}" method="post">
+        {% csrf_token %}
+        {{forms}}
+        <button type="submit">
+            Guardar
+        </button>
+    </form>
+
+
     {% endblock %}
 </body>
 

@@ -10,9 +10,11 @@
 <body>
     <header>{% extends 'layout/lateral.html' %}</header>
     {% block content %}
-    <h1>Aca retirar
-    </h1>
+    <form action="{% url 'retirarConfirmacion' %}" method="post">
+        {% csrf_token %}
+        {{forms}}
+        <button type="submit">Sacar</button>
+    </form>
     {% endblock %}
 </body>
-
 </html>

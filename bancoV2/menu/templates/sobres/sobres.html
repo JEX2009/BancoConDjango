@@ -10,8 +10,28 @@
 <body>
     <header>{% extends 'layout/lateral.html' %}</header>
     {% block content %}
-    <h1>aca los sobres
-    </h1>
+    <a href="{% url 'crearSobre' %}">Crea un nuevo sobre</a>
+
+    {% for sobre in sobres %}
+    <ul>
+        <li>
+            {{ sobre.id }}
+            {{ sobre.nombre }}
+            {{ sobre.saldo }}
+            {{ sobre.limite }}
+            {{ sobre.porcentaje }}
+            <form method="post" action="{% url 'sobresModificar' sobre.id %}">
+                {% csrf_token %}
+                <button type="submit">Modificar</button>
+            </form>
+            <form method="post" action="{% url 'sobresEliminar' sobre.id %}">
+                {% csrf_token %}
+                <button type="submit">Eliminar</button>
+            </form>
+        </li>
+    </ul>
+    {% endfor %}
+
     {% endblock %}
 </body>
 

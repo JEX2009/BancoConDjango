@@ -10,11 +10,8 @@
 <body>
     <header>{% extends 'layout/lateral.html' %}</header>
     {% block content %}
-    <form action="#" method="post">
-        {% csrf_token %}
-        {{forms}}
-        <button type="submit">Guardar</button>
-    </form>
+    <h1>Se han realizado los cambio de forma satisfactoria </h1>
+    <br> <a href='/'>Salir</a>
     {% endblock %}
 </body>
 

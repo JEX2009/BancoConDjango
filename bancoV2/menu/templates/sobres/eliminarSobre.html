@@ -10,11 +10,14 @@
 <body>
     <header>{% extends 'layout/lateral.html' %}</header>
     {% block content %}
-    <form action="#" method="post">
+    
+    <form action="{% url 'sobresGuardar' sobre.id %}" method="post">
         {% csrf_token %}
+        
         {{forms}}
         <button type="submit">Guardar</button>
     </form>
+
     {% endblock %}
 </body>
 

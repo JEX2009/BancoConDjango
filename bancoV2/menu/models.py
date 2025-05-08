@@ -8,6 +8,8 @@ class sobres (models.Model):
     saldo= models.IntegerField(default=0,validators=[MinValueValidator(0)])
     limite= models.IntegerField(default=0,validators=[MinValueValidator(0)])
     activo= models.BooleanField(default=True)
+    porcentaje =  models.IntegerField(default=0,validators=[MinValueValidator(0)],)
+    
 
     def __str__(self):
             return self.nombre
