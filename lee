@@ -35,7 +35,7 @@ El apartado name es para prevenir usar la ruta en el proyecto
 
 Las migraciones ya hacen un db por nosotros
 python bancoV2/manage.py makemigrations esto importan
-python bancoV2/manage.py migration crea ñas tablas y la bd
+python bancoV2/manage.py migrate crea ñas tablas y la bd
 
 para crear nuestras tablas se hace desde las apps y en models
 con una clase que hereda models.Model y ahi se ponen las columnas
@@ -51,7 +51,7 @@ renderizar htmls es con render(request, "nombreHtml", {nombre: dato que se quier
 
 en html los datos van asi {{nombre}}
 con esto {% %} puedes poner codigo Python en Html
-con esto {% extends 'nombrePlantilla' %} puedes poner una plantilla
+con esto <header>{% extends 'layout/lateral.html' %}</header> puedes poner una plantilla
 en la plantilla hay que poner {% block content %} y despues {% endblock %} y entre ellos se pone lo que se quiere de la pagina principal
 Esto se parece mucho a php
 
