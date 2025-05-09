@@ -1,27 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'layout/lateral.html' %}
+{% load static %}
+{% block content %}
+<a href="{% url 'sobres' %}">Volver</a>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-
-<body>
-    <header>{% extends 'layout/lateral.html' %}</header>
-    {% block content %}
-    <a href="{% url 'sobres' %}">Volver</a>
-
-    <form action="{% url 'sobreCreado' %}" method="post">
-        {% csrf_token %}
-        {{forms}}
-        <button type="submit">
-            Guardar
-        </button>
-    </form>
+<form action="{% url 'sobreCreado' %}" method="post">
+    {% csrf_token %}
+    {{forms}}
+    <button type="submit">
+        Guardar
+    </button>
+</form>
 
 
-    {% endblock %}
-</body>
-
-</html>
+{% endblock %}

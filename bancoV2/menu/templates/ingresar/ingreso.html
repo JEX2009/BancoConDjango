@@ -1,0 +1,16 @@
+{% extends 'layout/lateral.html' %}
+{% load static %}
+
+{% block content %}
+{% for sobre in sobres %}
+<ul>
+    <li>
+        <h1>
+            {{ sobre.nombre }}
+            {{ sobre.saldo }}
+        </h1>
+
+    </li>
+</ul>
+{% endfor %}
+{% endblock %}

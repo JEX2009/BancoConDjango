@@ -1,20 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'layout/lateral.html' %}
+{% load static %}
+{% block content %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
+{% if sobres %}
+<form action="{% url 'retirarConfirmacion' %}" method="post">
+    {% csrf_token %}
+    {{forms}}
+    <button type="submit">Sacar</button>
+</form>
+{% else %}
 
-<body>
-    <header>{% extends 'layout/lateral.html' %}</header>
-    {% block content %}
-    <form action="{% url 'retirarConfirmacion' %}" method="post">
-        {% csrf_token %}
-        {{forms}}
-        <button type="submit">Sacar</button>
-    </form>
-    {% endblock %}
-</body>
-</html>
+<h1>No hay ningun sobre del que retirar</h1>
+
+{% endif %}
+{% endblock %}

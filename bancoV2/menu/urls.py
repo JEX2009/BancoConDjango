@@ -13,4 +13,5 @@ urlpatterns = [
     path('sobresEliminar/<int:id>', views.sobresEliminar, name="sobresEliminar"),
     path('crearSobre/', views.formCrearSobre, name="crearSobre"),
     path('sobreCreado/', views.guardarNuevo, name="sobreCreado"),
+    path('ingresarTodo/', views.ingresar, name="ingresarParaTodos")
 ]

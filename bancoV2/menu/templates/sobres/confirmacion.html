@@ -1,18 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-
-<body>
-    <header>{% extends 'layout/lateral.html' %}</header>
-    {% block content %}
-    <h1>Se han realizado los cambio de forma satisfactoria </h1>
-    <br> <a href='/'>Salir</a>
-    {% endblock %}
-</body>
-
-</html>
+{% extends 'layout/lateral.html' %}
+{% load static %}
+{% block content %}
+<h1>Se han realizado los cambio de forma satisfactoria </h1>
+<br> <a href='/'>Salir</a>
+{% endblock %}

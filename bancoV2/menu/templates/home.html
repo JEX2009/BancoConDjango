@@ -1,18 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'layout/lateral.html' %}
+{% load static %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
+{% block title %}
+    Bienvenido a Mi Banco
+{% endblock %}
 
-<body>
-    <header>{% extends 'layout/lateral.html' %}</header>
-    {% block content %}
-    <h1>aca van las representaciones
-    </h1>
-    {% endblock %}
-</body>
+{% block content %}
+    <div class="hero">
+        <h1>¡Tu Banco de Confianza!</h1>
+        <p>Administra tus finanzas de forma fácil y segura.</p>
+        <a href="{% url 'ingresarTodos' %}" class="button">Comenzar Ahora</a>
+    </div>
 
-</html>
+    <section class="features">
+        <h2>Nuestros Servicios</h2>
+        <ul>
+            <li>Ingresos y Retiros rápidos</li>
+            <li>Gestión de Sobres personalizada</li>
+            <li>Seguridad avanzada</li>
+        </ul>
+    </section>
+{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'js/home.js' %}"></script>
+{% endblock %}
