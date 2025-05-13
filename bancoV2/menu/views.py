@@ -116,7 +116,6 @@ def ingresar(request):
             while dineroAsignado % 1000 != 0 :
                 dineroAsignado -=100
             #Si en dinero asignado empieza a dar menos que 1000 se meten al ultimo
-        print(dineroAsignado)
         if dineroAsignado > dineroSale:
             dineroAsignado = dineroSale
             #Si dinero saliente es menor de lo que se calcula se pone el restante

@@ -2,17 +2,18 @@
 {% load static %}
 
 {% block content %}
-{% for sobre in sobres %}
 <div class="presentacionSobre">
-    <ul>
-        <li>
-            <h1>
-                {{ sobre.nombre }}
-                {{ sobre.saldo }}
-            </h1>
-
-        </li>
-    </ul>
+    {% for sobre in sobres %}
+    <div class = presentacionSobreHijo >
+        <p class="mayorPeso">
+            Nombre del sobre:
+            {{ sobre.nombre }}
+        </p>
+        <p class="menorPeso">
+            Saldo:
+            {{ sobre.saldo }}
+        </p>
+    </div>
+    {% endfor %}
 </div>
-{% endfor %}
 {% endblock %}
