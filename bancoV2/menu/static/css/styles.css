@@ -121,3 +121,10 @@ footer {
 .faltaIngreso h1{
     color: rgb(194, 194, 194);
 }
+
+.presentacionSobre{
+    height: auto;
+    flex-direction: column;
+    padding: 20px; 
+    text-align: center;
+}

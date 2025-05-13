@@ -3,14 +3,16 @@
 
 {% block content %}
 {% for sobre in sobres %}
-<ul>
-    <li>
-        <h1>
-            {{ sobre.nombre }}
-            {{ sobre.saldo }}
-        </h1>
+<div class="presentacionSobre">
+    <ul>
+        <li>
+            <h1>
+                {{ sobre.nombre }}
+                {{ sobre.saldo }}
+            </h1>
 
-    </li>
-</ul>
+        </li>
+    </ul>
+</div>
 {% endfor %}
 {% endblock %}
