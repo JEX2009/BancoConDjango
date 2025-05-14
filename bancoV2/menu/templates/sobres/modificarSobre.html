@@ -1,12 +1,12 @@
 {% extends 'layout/lateral.html' %}
 {% load static %}
 {% block content %}
+<div class="modificarSobre">
+    <form action="{% url 'sobresGuardar' sobre.id %}" method="post">
+        {% csrf_token %}
 
-<form action="{% url 'sobresGuardar' sobre.id %}" method="post">
-    {% csrf_token %}
-
-    {{forms}}
-    <button type="submit">Guardar</button>
-</form>
-
+        {{forms}}
+        <button type="submit">Guardar</button>
+    </form>
+</div>
 {% endblock %}

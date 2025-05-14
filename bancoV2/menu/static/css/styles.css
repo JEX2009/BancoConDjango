@@ -30,7 +30,7 @@ nav a{
     display: block
 }
 
-nav a:hover{
+a:hover{
     color: red;
 
 }
@@ -48,9 +48,11 @@ nav a:hover{
     color: gray;
     font-size: 25px;
 }
+
 .hero a{
     font-size: 20px;
 }
+
 .hero a:hover{
     font-size: 30px;
     color: aliceblue;
@@ -122,6 +124,18 @@ footer {
 
 .faltaIngreso h1{
     color: rgb(194, 194, 194);
+    margin: 30px;
+}
+.faltaIngreso a{
+    font-size: 30px;
+    padding: 8px;
+    margin: 20px;
+    border-color: #00FFFF;
+    border-style:solid;
+}
+
+.faltaIngreso a:hover{
+    background-color: rgb(38, 37, 37);
 }
 
 .presentacionSobre{
@@ -207,4 +221,138 @@ footer {
 }
 
 /* Estilos de sobres */
+
+.crearSobre {
+    display: flex;
+    justify-content: center;
+    margin: 10px;
+}
+.crearSobre label{
+    color: #00FFFF;
+    margin-right: 20px;
+}
+.crearSobre input{
+    padding: 5px;
+    margin: 10px;
+    background-color: #333333;
+    color: whitesmoke;
+}
+
+.crearSobre button{
+    padding: 10px;
+    background-color: #ADD8E6;
+    color: black;
+}
+
+.vinculo{
+    margin: 15px;
+    margin-left: 10%;
+}
+
+.vinculo  a{
+    height: 20px;
+    padding: 8px;
+    border-color: #00FFFF;
+    border-style:solid;
+}
+
+.vinculo a:hover{
+    background-color: rgb(38, 37, 37);
+}
+
+.modificarSobre label{
+    color: #00FFFF;
+    margin-right: 20px;
+}
+.modificarSobre input{
+    padding: 5px;
+    margin: 10px;
+    background-color: #333333;
+    color: whitesmoke;
+}
+
+.modificarSobre button{
+    padding: 10px;
+    background-color: #ADD8E6;
+    color: black;
+}
+
+.sorbresInicio{
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+    background-color: black;
+    justify-content: center;
+}
+
+.sorbresInicio a{
+    margin: 10px
+    margin
+}
+
+.informacionSobre{
+    margin: 10px;
+}
+
+.botonModificar{
+    margin: 5px;
+    height: 25px;
+    justify-content: center;
+}
+
+.botonEliminar{
+    margin: 5px;
+    height: 25px;
+    justify-content: center;
+}
+
+.sorbresInicio button{
+    padding: 10px;
+    background-color: #ADD8E6;
+    color: black;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.presentacionRetiro{
+    height: auto;
+    margin: 10px;
+    width: 98%;
+    display: flex;
+    flex-direction:row;
+    justify-content: space-evenly;
+}
+
+.informacionSobre p{
+    padding: 15px;
+    background-color: #333333;
+    color: white;
+    text-align: start;
+    margin: 0px;
+    font-size: 15px;
+}
+
+.informacionSobre{
+    width: 20%;
+    margin: 10px;
+    background-color: #333333;
+    color: white;
+}
+
+.link{
+    height: 20px;
+    padding: 8px;
+    border-color: #00FFFF;
+    border-style:solid; 
+    text-align: center;
+    width: 12%;
+}
+
+.link:hover{
+    background-color: rgb(38, 37, 37);
+    color: red;
+}
+
+
+
 

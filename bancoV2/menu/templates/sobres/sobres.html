@@ -1,25 +1,38 @@
 {% extends 'layout/lateral.html' %}
 {% load static %}
 {% block content %}
-<a href="{% url 'crearSobre' %}">Crea un nuevo sobre</a>
 
+<div class="link">
+    <a href="{% url 'crearSobre' %}">Crea un nuevo sobre</a>
+</div>
 {% for sobre in sobres %}
-<ul>
-    <li>
-        {{ sobre.nombre }}
-        {{ sobre.saldo }}
-        {{ sobre.limite }}
-        {{ sobre.porcentaje }}
-        <form method="post" action="{% url 'sobresModificar' sobre.id %}">
-            {% csrf_token %}
-            <button type="submit">Modificar</button>
-        </form>
-        <form method="post" action="{% url 'sobresEliminar' sobre.id %}">
-            {% csrf_token %}
-            <button type="submit">Eliminar</button>
-        </form>
-    </li>
-</ul>
+<div class="sorbresInicio">
+    <div class="informacionSobre">
+        <p>
+            Nombre:
+            {{ sobre.nombre }}
+            <br>
+            Saldo:
+            {{ sobre.saldo }}
+            <br>
+            Limite:
+            {{ sobre.limite }}
+
+            Porcentaje:
+            {{ sobre.porcentaje }}
+
+        </p>
+    </div>
+    <form method="post" action="{% url 'sobresModificar' sobre.id %}" class="botonModificar">
+        {% csrf_token %}
+        <button type="submit">Modificar</button>
+    </form>
+
+    <form method="post" action="{% url 'sobresEliminar' sobre.id %}" class="botonEliminar">
+        {% csrf_token %}
+        <button type="submit">Eliminar</button>
+    </form>
+</div>
 {% endfor %}
 
 {% endblock %}

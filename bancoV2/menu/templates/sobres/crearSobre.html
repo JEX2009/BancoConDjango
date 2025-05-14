@@ -1,15 +1,17 @@
 {% extends 'layout/lateral.html' %}
 {% load static %}
 {% block content %}
-<a href="{% url 'sobres' %}">Volver</a>
-
-<form action="{% url 'sobreCreado' %}" method="post">
-    {% csrf_token %}
-    {{forms}}
-    <button type="submit">
-        Guardar
-    </button>
-</form>
-
+<div class="crearSobre">
+    <form action="{% url 'sobreCreado' %}" method="post" >
+        {% csrf_token %}
+        {{forms}}
+        <button type="submit">
+            Guardar
+        </button>
+    </form>
+    <div class="vinculo">
+    <a href="{% url 'sobres' %}" id="crearBoton" >Volver</a>
+    </div>
+</div>
 
 {% endblock %}
