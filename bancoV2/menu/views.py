@@ -23,15 +23,20 @@ def retirar(request):
     })
 
 def retirarConfirmacion(request):
-        sobreRetirar= request.POST['sobre'].strip()
+        sobreRetirar= request.POST['sobre'].strip().capitalize()
         sobreBuscado = sobreModels.objects.get(nombre=sobreRetirar)
         retiro = int(request.POST['cantidad'])
+        seLogro = False
         if sobreBuscado.saldo >= retiro :
             sobreBuscado.saldo -= retiro
             sobreBuscado.save()
-            return HttpResponse("Se retiraron %d, el saldo restante es %d <br> <a href='/'>Salir</a>" % (retiro,sobreBuscado.saldo))
-        else:
-            return HttpResponse("Saldo insuficiente<br> <a href='/'>Salir</a>")
+            seLogro= True
+        
+        return render(request, 'retirar/confirmacion.html',{
+            "seLogro":seLogro,
+            "retiro":retiro,
+            "sobre":sobreBuscado
+        })
 
 def sobres(request):
     sobresDB = sobreModels.objects.all()
@@ -45,14 +50,15 @@ def formCrearSobre(request):
 
 def guardarNuevo(request):
     if request.method == 'POST':
+        nombreStr = request.POST["nombre"].strip().capitalize()
         sobreModels.objects.create(
-            nombre=request.POST["nombre"]
+            nombre=nombreStr
             ,saldo=request.POST["saldo"]
             ,limite=request.POST["limite"]
             ,porcentaje=request.POST["porcentaje"])
         return render(request, 'sobres/confirmacion.html')
     else:
-        return HttpResponse("Acceso no permitido directamente.")
+        return render(request, 'sobres/confirmacion.html')
 
 def obtencionId(request, sobre_id):
     if request.method == 'POST':
@@ -72,19 +78,19 @@ def guardarSobre(request,id):
         Datos.append(request.POST.get(valor))
     Datos.pop(0)
     sobre = sobreModels.objects.get(id=id)
-    
-    sobre.nombre= Datos[0]
+    nombre =Datos[0].strip().capitalize()
+    sobre.nombre= nombre
     sobre.saldo = Datos[1]
     sobre.limite= Datos[2]
     sobre.porcentaje= Datos[3]
     
     sobre.save()
-    return HttpResponse("Se han realizado los cambio de forma satisfactoria <br> <a href='/'>Salir</a>")
+    return render(request, 'sobres/confirmacion.html')
 
 def sobresEliminar(request,id):
     sobre = sobreModels.objects.get(id=id)
     sobre.delete()
-    return HttpResponse("Se han realizado los cambio de forma satisfactoria <br> <a href='/'>Salir</a>")
+    return render(request, 'sobres/confirmacion.html')
 
 def ingresar(request):
     sobreLleno = []
