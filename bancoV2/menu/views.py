@@ -97,7 +97,7 @@ def ingresar(request):
     cantidad = []
     sobresVacios = []
     colones = [1000,2000,5000,10000,20000]
-    
+    ingresos = {}
     for billetes in request.POST:
         cantidad.append(request.POST.get(billetes))
     cantidad.pop(0)
@@ -113,8 +113,8 @@ def ingresar(request):
             sobreLleno.append(sobre)
         else:
             sobresVacios.append(sobre)
-            
     dineroSale = total
+    
     for sobre in sobresVacios:
         porcentaje = sobre.porcentaje / 100     #Calculan cuanto dinero ira para ese sobre
         dineroAsignado = int(total * porcentaje)#Calculan cuanto dinero ira para ese sobre
@@ -126,14 +126,18 @@ def ingresar(request):
             dineroAsignado = dineroSale
             #Si dinero saliente es menor de lo que se calcula se pone el restante
 
+        ingresos[sobre.nombre ] =  dineroAsignado
         sobre.saldo += dineroAsignado
         sobre.save()
         dineroSale -= dineroAsignado
         #Proceso de guardado en sobre
         
     if dineroSale > 0 and sobresVacios:
+        ingresos[sobre.nombre ] =  dineroAsignado
         sobreMayorPorcentaje.saldo += dineroSale
         sobreMayorPorcentaje.save()
-        #Se guarda lo resatante 
+        #Se guarda lo restante 
+        
     return render(request, 'ingresar/ingreso.html',{
-        "sobres":sobresVacios})
+        "ingresos": ingresos,
+        })

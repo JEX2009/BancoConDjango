@@ -3,15 +3,15 @@
 
 {% block content %}
 <div class="presentacionSobre">
-    {% for sobre in sobres %}
-    <div class = presentacionSobreHijo >
+    {% for sobre, saldo in ingresos.items %}
+    <div class="presentacionSobreHijo">
         <p class="mayorPeso">
             Nombre del sobre:
-            {{ sobre.nombre }}
+            {{ sobre }}
         </p>
         <p class="menorPeso">
-            Saldo:
-            {{ sobre.saldo }}
+            Saldo a ingresar:
+            {{ saldo}}
         </p>
     </div>
     {% endfor %}
