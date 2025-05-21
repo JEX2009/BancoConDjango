@@ -30,8 +30,17 @@
 
     <form method="post" action="{% url 'sobresEliminar' sobre.id %}" class="botonEliminar">
         {% csrf_token %}
-        <button type="submit">Eliminar</button>
+        <button commandfor="confirm-dialog">Eliminar</button>
     </form>
+    <dialog id="confirm-dialog">
+        <header>
+            <h2>¿Quieres eliminarlo?</h2>
+        </header>
+        <p>Estas seguro que quieres eliminarlo</p>
+        <footer>
+                          
+        </footer>
+    </dialog>
 </div>
 {% endfor %}
 

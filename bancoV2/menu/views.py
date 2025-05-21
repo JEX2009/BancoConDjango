@@ -141,3 +141,21 @@ def ingresar(request):
     return render(request, 'ingresar/ingreso.html',{
         "ingresos": ingresos,
         })
+    
+def ingresarUno(request) : 
+    todosSobres = sobreModels.objects.all()
+    return render(request,'ingresar/ingresarUno.html',{
+        'forms' : sacarDinero,
+        'sobres': todosSobres})
+
+def ingresarUnoConfirmacion(request):
+        sobreIngresar= request.POST['sobre'].strip().capitalize()
+        sobreBuscado = sobreModels.objects.get(nombre=sobreIngresar)
+        ingreso = int(request.POST['cantidad'])
+        sobreBuscado.saldo += ingreso
+        sobreBuscado.save()
+        
+        return render(request, 'ingresar/confirmacion.html',{
+            "ingreso":ingreso,
+            "sobre":sobreBuscado
+        })

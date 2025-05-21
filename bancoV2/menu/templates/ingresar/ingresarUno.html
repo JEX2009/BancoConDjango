@@ -2,7 +2,32 @@
 {% load static %}
 
 {% block content %}
-    <h1>Forms para ingresar uno</h1>
+<!-- falta logica para ingresar saldo solo para un sobre que realmente es la misma que retirar pero al revez -->
+{% if sobres %}
+<div class="presentacionRetiro">
+    {% for sobre in sobres %}
+    <div class="presentacionRetiroHijo">
+        <p>
+            Nombre del sobre:
+            {{ sobre.nombre }} <br>
+            Saldo:
+            {{ sobre.saldo }}
+        </p>
+    </div>
 
-    <!-- falta logica para ingresar saldo solo para un sobre que realmente es la misma que retirar pero al revez -->
+    {% endfor %}
+</div>
+<div class="retiro">
+    <form action="{% url 'ingresoUnoConfirmacion' %}" method="post">
+        {% csrf_token %}
+        {{forms}}
+        <button type="submit">Ingresar</button>
+    </form>
+</div>
+{% else %}
+<div class="faltaIngreso">
+    <h1>No hay ningun sobre al que ingresar</h1>
+</div>
+
+{% endif %}
 {% endblock %}

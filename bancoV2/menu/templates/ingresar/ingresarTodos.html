@@ -3,11 +3,14 @@
 
 {% block content %}
 {% if sobres %}
+<div class="link">
+    <a href="{% url 'ingresarParaUno' %}">Ingresa a un sobre</a>
+</div>
 <div class="ingreso">
     <form action="{% url 'ingresarParaTodos' %}" method="post">
         {% csrf_token %}
         {{ forms }}
-        <button type="submit">Guardar</button>
+        <button type="submit">Ingresar</button>
     </form>
 </div>
 {% else %}

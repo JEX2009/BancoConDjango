@@ -13,5 +13,7 @@ urlpatterns = [
     path('sobresEliminar/<int:id>', views.sobresEliminar, name="sobresEliminar"),#Se usa en modificar para eliminar 
     path('crearSobre/', views.formCrearSobre, name="crearSobre"),#Se usa en modificar para crear sobre
     path('sobreCreado/', views.guardarNuevo, name="sobreCreado"),# Se usa en crear para guardar
-    path('ingresarTodo/', views.ingresar, name="ingresarParaTodos")#Se usa para procesar los datos
+    path('ingresarTodo/', views.ingresar, name="ingresarParaTodos"),#Se usa para procesar los datos
+    path('ingresarUno/', views.ingresarUno, name="ingresarParaUno"),#Se usa para procesar los datos
+    path('iConfirmacion/', views.ingresarUnoConfirmacion, name="ingresoUnoConfirmacion"),# Paso de de ingresar
 ]
