@@ -91,11 +91,23 @@ footer {
 
 /*Css de ingresar*/
 
+.ingresarTodos{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.lkIngresarUno{
+    padding: 30px;
+}
+
 .ingreso{
+    display: flex;
+    justify-content: center;
     height: auto;
-    flex-direction: column;
     padding: 20px; 
     text-align: center;
+    margin: 0 auto;
 }
 
 .ingreso input{
@@ -222,6 +234,16 @@ footer {
 
 /* Estilos de sobres */
 
+.sobres{
+    display: flex;
+    justify-content: center;
+}
+
+.todos{
+    margin: 0 auto;
+    width: auto;
+}
+
 .crearSobre {
     display: flex;
     justify-content: center;
@@ -283,15 +305,7 @@ footer {
     padding: 10px;
     background-color: black;
     justify-content: center;
-}
-
-.sorbresInicio a{
-    margin: 10px
-    margin
-}
-
-.informacionSobre{
-    margin: 10px;
+    width: auto;
 }
 
 .botonModificar{
@@ -324,7 +338,7 @@ footer {
 }
 
 .informacionSobre p{
-    padding: 15px;
+    padding: 20px;
     background-color: #333333;
     color: white;
     text-align: start;
@@ -333,7 +347,8 @@ footer {
 }
 
 .informacionSobre{
-    width: 20%;
+    margin: 10px;
+    width: auto;
     margin: 10px;
     background-color: #333333;
     color: white;

@@ -1,38 +1,40 @@
 {% extends 'layout/lateral.html' %}
 {% load static %}
 {% block content %}
-
-<div class="link">
-    <a href="{% url 'crearSobre' %}">Crea un nuevo sobre</a>
-</div>
-{% for sobre in sobres %}
-<div class="sorbresInicio">
-    <div class="informacionSobre">
-        <p>
-            Nombre:
-            {{ sobre.nombre }}
-            <br>
-            Saldo:
-            {{ sobre.saldo }}
-            <br>
-            Limite:
-            {{ sobre.limite }}
-
-            Porcentaje:
-            {{ sobre.porcentaje }}
-
-        </p>
+<div class="sobres">
+    <div class="lkIngresarUno">
+        <a href="{% url 'crearSobre' %}">Crea un nuevo sobre</a>
     </div>
-    <form method="post" action="{% url 'sobresModificar' sobre.id %}" class="botonModificar">
-        {% csrf_token %}
-        <button type="submit">Modificar</button>
-    </form>
+    <div  class="todos">
+    {% for sobre in sobres %}
+    <div class="sorbresInicio">
+        <div class="informacionSobre">
+            <p>
+                Nombre:
+                {{ sobre.nombre }}
+                <br>
+                Saldo:
+                {{ sobre.saldo }}
+                <br>
+                Limite:
+                {{ sobre.limite }}
 
-    <form method="post" action="{% url 'sobresEliminar' sobre.id %}" class="botonEliminar">
-        {% csrf_token %}
-        <button type="submit">Eliminar</button>
-    </form>
+                Porcentaje:
+                {{ sobre.porcentaje }}
+
+            </p>
+        </div>
+        <form method="post" action="{% url 'sobresModificar' sobre.id %}" class="botonModificar">
+            {% csrf_token %}
+            <button type="submit">Modificar</button>
+        </form>
+
+        <form method="post" action="{% url 'sobresEliminar' sobre.id %}" class="botonEliminar">
+            {% csrf_token %}
+            <button type="submit">Eliminar</button>
+        </form>
+    </div>
+    {% endfor %}
+    </div>
 </div>
-{% endfor %}
-
 {% endblock %}

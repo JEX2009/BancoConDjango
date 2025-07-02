@@ -18,8 +18,8 @@ class sacarDinero(forms.Form):
     cantidad= forms.IntegerField()
     
 class meterDinero(forms.Form):
-    billetes1= forms.IntegerField(label="Agrega la cantidad de billletes de 1000"  , initial=0)
-    billetes2= forms.IntegerField(label="Agrega la cantidad de billletes de 2000"  , initial=0)
-    billetes5= forms.IntegerField(label="Agrega la cantidad de billletes de 5000"  , initial=0)
-    billetes10= forms.IntegerField(label="Agrega la cantidad de billletes de 10000", initial=0)
-    billetes20= forms.IntegerField(label="Agrega la cantidad de billletes de 20000", initial=0)
+    billetes1= forms.IntegerField(label="Agrega la cantidad de billletes de 1000"  , initial=0, min_value=0)
+    billetes2= forms.IntegerField(label="Agrega la cantidad de billletes de 2000"  , initial=0, min_value=0)
+    billetes5= forms.IntegerField(label="Agrega la cantidad de billletes de 5000"  , initial=0, min_value=0)
+    billetes10= forms.IntegerField(label="Agrega la cantidad de billletes de 10000", initial=0, min_value=0)
+    billetes20= forms.IntegerField(label="Agrega la cantidad de billletes de 20000", initial=0, min_value=0)
