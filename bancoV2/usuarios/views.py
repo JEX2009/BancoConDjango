@@ -2,6 +2,7 @@ from django.conf import settings
 from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework import status
+from rest_framework.views import APIView
 
 class LoginView(TokenObtainPairView):
     def post(self, request, *args, **kwargs):
@@ -22,4 +23,12 @@ class LoginView(TokenObtainPairView):
             )
             response.data['message'] = "Login exitoso"
 
+        return response
+    
+
+class LogoutView(APIView):
+    def post(self, request):
+        response = Response({"message": "Sesión cerrada"}, status=status.HTTP_200_OK)
+        # Borramos la cookie del navegador
+        response.delete_cookie(settings.SIMPLE_JWT['AUTH_COOKIE'])
         return response
