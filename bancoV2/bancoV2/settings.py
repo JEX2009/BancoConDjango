@@ -37,10 +37,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'menu'
+    'corsheaders',
+    'rest_framework',
+    'sobres'
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -70,7 +73,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'bancoV2.wsgi.application'
 
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+]
 
+CORS_ALLOW_CREDENTIALS = True
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
@@ -115,7 +123,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
@@ -125,3 +132,26 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+from datetime import timedelta
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ROTATE_REFRESH_TOKENS': True,
+    
+    # Configuración de Cookies
+    'AUTH_COOKIE': 'access_token',  # Nombre de la cookie
+    'AUTH_COOKIE_DOMAIN': None,     # En desarrollo suele ser None
+    'AUTH_COOKIE_SECURE': False,    # True en producción (HTTPS)
+    'AUTH_COOKIE_HTTP_ONLY': True,  # Clave: Impide acceso desde JS
+    'AUTH_COOKIE_PATH': '/',        # Disponible en todo el sitio
+    'AUTH_COOKIE_SAMESITE': 'Lax',  # Protección CSRF
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'usuarios.authenticate.CustomJWTAuthentication', 
+    ),
+}

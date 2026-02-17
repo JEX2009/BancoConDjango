@@ -1,2 +1,6 @@
 django>=5.1.6
 psycopg2-binary
+django-cors-headers
+djangorestframework 
+python-dotenv 
+djangorestframework-simplejwt 
