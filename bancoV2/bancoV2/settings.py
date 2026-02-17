@@ -39,16 +39,17 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'rest_framework',
-    'sobres'
+    'usuarios', 
+    'sobres',
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
+    'corsheaders.middleware.CorsMiddleware', 
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
+    'django.middleware.common.CommonMiddleware', 
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware', 
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -140,18 +141,17 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
     'ROTATE_REFRESH_TOKENS': True,
-    
-    # Configuración de Cookies
-    'AUTH_COOKIE': 'access_token',  # Nombre de la cookie
-    'AUTH_COOKIE_DOMAIN': None,     # En desarrollo suele ser None
-    'AUTH_COOKIE_SECURE': False,    # True en producción (HTTPS)
-    'AUTH_COOKIE_HTTP_ONLY': True,  # Clave: Impide acceso desde JS
-    'AUTH_COOKIE_PATH': '/',        # Disponible en todo el sitio
-    'AUTH_COOKIE_SAMESITE': 'Lax',  # Protección CSRF
+    'AUTH_COOKIE': 'access_token',  
+    'AUTH_COOKIE_DOMAIN': None,     
+    'AUTH_COOKIE_SECURE': False,   
+    'AUTH_COOKIE_HTTP_ONLY': True, 
+    'AUTH_COOKIE_PATH': '/',       
+    'AUTH_COOKIE_SAMESITE': 'Lax',  
 }
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'usuarios.authenticate.CustomJWTAuthentication', 
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
 }
