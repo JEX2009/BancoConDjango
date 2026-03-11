@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import api from './api/ApiBase';
 import AppLayout from './layout/AppLayout';
 import Inicio from './pages/home/Inicio';
+import Sobres from './pages/sobres/Sobres';
 import Registro from './pages/login/Registro';
 import Login from './pages/login/Login';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -32,7 +33,7 @@ export default function App() {
         <Route path="/" element={<Inicio />} />
         <Route path="/registro" element={<Registro />} />
         <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
-        <Route path="/Sobres" element={<Inicio />} />
+        <Route path="/Sobres" element={<Sobres isAuthenticated={isAuthenticated} />} />
 
         <Route element={<ProtectedRoute isAuthenticated={isAuthenticated} loading={loading} />}>
         </Route>

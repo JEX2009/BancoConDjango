@@ -3,7 +3,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.conf import settings
 
 class Sobres(models.Model):
-    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,related_name='sobres')
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,related_name='sobres', blank=True, null=True)
     nombre = models.CharField(max_length=100)
     saldo = models.DecimalField(max_digits=12,decimal_places=2,default=0,validators=[MinValueValidator(0)])
     limite = models.DecimalField(max_digits=12, decimal_places=2, default=0,validators=[MinValueValidator(0)])

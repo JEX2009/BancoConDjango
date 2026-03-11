@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react'
-import { sobreService } from '../../api/SobreService'
+import { sobreService } from '../api/SobreService'
 
-export function useInicio() {
+export function useSobres() {
     const [sobres, setSobres] = useState([]);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);

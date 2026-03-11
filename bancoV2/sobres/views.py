@@ -9,7 +9,14 @@ class SobreViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        return Sobres.objects.filter(usuario=user, activo=True)
+        
+        print("Tipo de usuario:" , type(user))
+        
+        if self.request.user.is_authenticated:
+            return Sobres.objects.filter(usuario=user, activo=True)
+        
+        return Sobres.objects.filter(is_public=True, activo=True)
+    
 
     def perform_create(self, serializer):
         serializer.save(usuario=self.request.user)
