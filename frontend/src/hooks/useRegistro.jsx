@@ -3,12 +3,12 @@ import { authService } from '../api/UserService';
 import { useNavigate } from 'react-router-dom';
 
 export function useRegistro() {
-    const [loading, setLoading] = useState(false);
+    const [cargar, setCargar] = useState(false);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
 
     const registrarUsuario = async (formData) => {
-        setLoading(true);
+        setCargar(true);
         setError(null);
         try {
             await authService.registro(formData);
@@ -16,9 +16,9 @@ export function useRegistro() {
         } catch (err) {
             setError(err.response?.data || "Error al registrar usuario");
         } finally {
-            setLoading(false);
+            setCargar(false);
         }
     };
 
-    return { registrarUsuario, loading, error };
+    return { registrarUsuario, cargar, error };
 }

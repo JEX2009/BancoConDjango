@@ -1,17 +1,16 @@
-// src/pages/usuarios/Login.jsx
 import { set, useForm } from 'react-hook-form';
 import { authService } from '../../api/UserService';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
-export default function Login({ setIsAuthenticated }) {
+export default function Login({ setAutenticado }) {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const navigate = useNavigate();
     const [error, setError] = useState()
     const onSubmit = async (data) => {
         try {
             await authService.login(data);
-            setIsAuthenticated(true);
+            setAutenticado(true);
             navigate('/');
         } catch (err) {
             setError(true)
@@ -31,12 +30,12 @@ export default function Login({ setIsAuthenticated }) {
                 </div>
                 <div>
                     <input type="password" {...register("password", { required: "La contraseña es obligatora"})} placeholder="Contraseña" className={`w-full border p-2 rounded ${errors.password ? 'border-red-500' : 'border-gray-300'}`} />
-                    {errors.username && (
+                    {errors.password && (
                         <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
                     )}
                 </div>
                 <button type="submit" className="w-full bg-blue-600 text-white p-2 rounded">Entrar</button>
-                {error && (<span className="text-red-500 text-sm mt-1"></span>)}
+                {error && (<span className="text-red-500 text-sm mt-1">Hubo un error a la hora de hacer el login</span>)}
             </form>
         </div>
     );

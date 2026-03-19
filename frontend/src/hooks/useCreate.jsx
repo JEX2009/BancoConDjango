@@ -1,28 +1,30 @@
-
-import { useState } from "react";
+import {  useState } from "react";
 
 export default function useCreate(createFunction, actualizeFunction = null) {
-    const [data, setData] = useState([]);
-    const [succes, setSucces] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState(null);
+    const [exitoPost, setExito] = useState(false);
+    const [cargandoPost, setCargando] = useState(false);
+    const [errorPost, setError] = useState(false);
 
-    const handleCreate = async (dataToSend) => {
+
+    const post = async (dataToSend) => {
         try {
-            setError(null);
-            setIsLoading(true);
+            setCargando(true);
             const response = await createFunction(dataToSend);
-            setData(response);
             if (actualizeFunction !== null) {
                 actualizeFunction();
             }
-            setSucces("Se a creado con exito");
+            setExito(true);
             return response;
         } catch (error) {
-            setError(error);
+            setError(true);
         } finally {
-            setIsLoading(false);
+            setCargando(false);
+            setTimeout(() => {
+                setError(false);
+                setExito(false)
+            }, 5000);
         }
     }
-    return { data, isLoading, error, succes, handleCreate };
+
+    return { cargandoPost, errorPost, exitoPost, post };
 }

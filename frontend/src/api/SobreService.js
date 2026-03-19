@@ -18,5 +18,9 @@ export const sobreService = {
 
     delete: async (id) => {
         await api.delete(`Sobres/${id}/`);
+    },
+
+    reactivate: async (id) => {
+        await api.post(`Sobres/${id}/reactivar/`);
     }
 };

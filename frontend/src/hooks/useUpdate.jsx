@@ -1,24 +1,31 @@
 import { useState } from "react";
 
-export default function useUpdate(updateFunction) {
-    const [data, setData] = useState([]);
-    const [succes, setSucces] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState(null);
+export default function useUpdate(updateFunction,actualizeFunction) {
+    const [datosPut, setDatos] = useState([]);
+    const [exitoPut, setExito] = useState(false);
+    const [cargandoPut, setCargando] = useState(false);
+    const [errorPut, setError] = useState(false);
 
-    const handleUpdate = async (id, dataToSend) => {
+    const put = async (id, dataToSend) => {
         try {
             setError(null);
-            setIsLoading(true);
+            setCargando(true);
             const response = await updateFunction(id, dataToSend);
-            setData(response);
-            setSucces("Se a actualizado con exito");
+            if (actualizeFunction !== null) {
+                actualizeFunction();
+            }
+            setDatos(response);
+            setExito(true);
             return response;
         } catch (error) {
-            setError(error);
+            setError(true);
         } finally {
-            setIsLoading(false);
+            setCargando(false);
+            setTimeout(() => {
+                setError(false);
+                setExito(false)
+            }, 5000);
         }
     }
-    return { data, isLoading, error, succes, handleUpdate };
+    return { datosPut, cargandoPut, errorPut, exitoPut, put };
 }

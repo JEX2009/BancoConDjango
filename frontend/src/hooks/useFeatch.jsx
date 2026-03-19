@@ -1,26 +1,27 @@
 import { useEffect, useState } from "react";
 
 export default function useFetch(featchFunction, name) {
-    const [data, setData] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState(null);
-
+    const [datosGet, setDato] = useState([]);
+    const [cargandoGet, setCargando] = useState(true);
+    const [errorGet, setError] = useState(null);
+    
     const executeFetch = async () => {
         try {
             setError(null);
-            setIsLoading(true);
+            setCargando(true);
             const request = await featchFunction();
-            setData(request);
+            setDato(request);
         } catch (error) {
             setError(`No se pudieron cargar ${name}.`); 
         } finally {
-            setIsLoading(false);
+            setCargando(false);
         }
     };
     useEffect(() => {
         executeFetch();
     }, [featchFunction])    
 
-    return { data, isLoading, error, refetch: executeFetch };
+    return { datosGet, cargandoGet, errorGet, refetch:executeFetch };
 }
+
 
