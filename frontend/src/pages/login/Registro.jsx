@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 import { useRegistro } from '../../hooks/useRegistro';
 
 export default function Registro() {
-    const { registrarUsuario, loading, error: serverError } = useRegistro();
+    const { registrarUsuario, cargar, error: errorServidor } = useRegistro();
     
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
     const onSubmit = (data) => {
@@ -24,7 +24,7 @@ export default function Registro() {
                         {...register("username", { required: "El usuario es obligatorio" })}
                     />
                     {errors.username && <p className="text-red-500 text-xs mt-1">{errors.username.message}</p>}
-                    {serverError?.username && <p className="text-red-500 text-xs mt-1">Este usuario ya existe.</p>}
+                    {errorServidor?.username && <p className="text-red-500 text-xs mt-1">Este usuario ya existe.</p>}
                 </div>
 
                 <div>
@@ -66,18 +66,18 @@ export default function Registro() {
                     {errors.password_confirm && <p className="text-red-500 text-xs mt-1">{errors.password_confirm.message}</p>}
                 </div>
 
-                {serverError?.non_field_errors && (
+                {errorServidor?.non_field_errors && (
                     <div className="bg-red-50 p-2 rounded text-red-600 text-sm">
-                        {serverError.non_field_errors}
+                        {errorServidor.non_field_errors}
                     </div>
                 )}
 
                 <button 
                     type="submit" 
-                    disabled={loading}
+                    disabled={cargar}
                     className="w-full bg-blue-600 text-white p-2 rounded font-semibold hover:bg-blue-700 disabled:bg-blue-300 transition-colors"
                 >
-                    {loading ? 'Procesando...' : 'Registrarse'}
+                    {cargar ? 'Procesando...' : 'Registrarse'}
                 </button>
             </form>
         </div>

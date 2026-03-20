@@ -1,1 +1,16 @@
 @import "tailwindcss";
+
+@keyframes fadeInSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px); /* Empieza un poco más abajo */
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0); /* Termina en su posición original */
+  }
+}
+
+.animate-fade-in-list {
+  animation: fadeInSlideIn 0.4s ease-out forwards;
+}

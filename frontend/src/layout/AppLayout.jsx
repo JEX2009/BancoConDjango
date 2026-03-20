@@ -1,23 +1,23 @@
 import '/src/static/Tailwind.css';
 import { Link, Outlet, useLocation } from 'react-router-dom';
-import { HiOutlineHome, HiOutlineInboxIn,HiOutlineLogout, HiOutlineUserAdd, HiOutlineLogin } from 'react-icons/hi';
+import { HiOutlineHome, HiOutlineInboxIn, HiOutlineLogout, HiOutlineUserAdd, HiOutlineLogin } from 'react-icons/hi';
 import { useNavigate } from 'react-router-dom';
-import {authService} from '../api/UserService'
-export default function Navbar({ isAuthenticated, setIsAuthenticated }) {
+import { authService } from '../api/UserService'
+export default function Navbar({ autenticado, setAutenticado, setError }) {
     const navigate = useNavigate();
 
-    const handleLogout = async () => {
+    const deslogueo = async () => {
         try {
             await authService.logout();
-            setIsAuthenticated(false); // Limpiamos el estado global
-            navigate('/login'); // Redirigimos al login
+            setAutenticado(false);
+            navigate('/login');
         } catch (error) {
-            console.error("Error al cerrar sesión", error);
+            setError("Ha ocurrido un error")
         }
     };
     const location = useLocation();
 
-    const linkStyle = (path) => {
+    const styloLink = (path) => {
         const base = "flex items-center space-x-1 px-3 py-2 rounded-md transition-colors text-sm";
         const active = "bg-blue-50 text-blue-600 font-semibold";
         const inactive = "text-gray-600 hover:bg-gray-100 hover:text-gray-900";
@@ -39,39 +39,39 @@ export default function Navbar({ isAuthenticated, setIsAuthenticated }) {
                     <nav>
                         <ul className="flex space-x-2">
                             <li>
-                                <Link to="/" className={linkStyle('/')}>
+                                <Link to="/" className={styloLink('/')}>
                                     <HiOutlineHome />
                                     <span>Inicio</span>
                                 </Link>
                             </li>
                             <li>
-                                <Link to="/Sobres" className={linkStyle('/Sobres')}>
+                                <Link to="/Sobres" className={styloLink('/Sobres')}>
                                     <HiOutlineInboxIn />
                                     <span>Mis Sobres</span>
                                 </Link>
                             </li>
-                            {isAuthenticated ? (
+                            {autenticado ? (
                                 <>
                                     <li>
-                                    <button 
-                                        onClick={handleLogout}
-                                        className="flex items-center space-x-1 px-3 py-2 rounded-md text-sm text-red-600 hover:bg-red-50 transition-colors"
-                                    >
-                                        <HiOutlineLogout />
-                                        <span>Salir</span>
-                                    </button>
-                                </li>
+                                        <button
+                                            onClick={deslogueo}
+                                            className="flex items-center space-x-1 px-3 py-2 rounded-md text-sm text-red-600 hover:bg-red-50 transition-colors"
+                                        >
+                                            <HiOutlineLogout />
+                                            <span>Salir</span>
+                                        </button>
+                                    </li>
                                 </>
                             ) : (
                                 <>
                                     <li>
-                                        <Link to="/login" className={linkStyle('/login')}>
+                                        <Link to="/login" className={styloLink('/login')}>
                                             <HiOutlineLogin />
                                             <span>Entrar</span>
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link to="/registro" className={linkStyle('/registro')}>
+                                        <Link to="/registro" className={styloLink('/registro')}>
                                             <HiOutlineUserAdd />
                                             <span>Registrarse</span>
                                         </Link>
