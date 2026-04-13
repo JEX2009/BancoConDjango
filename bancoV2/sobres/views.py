@@ -3,19 +3,21 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from .models import Sobres
 from .serializers import SobreSerializer
+from decimal import Decimal
 
 class SobreViewSet(viewsets.ModelViewSet):
-    queryset = Sobres.objects.all().order_by('nombre')
+    queryset = Sobres.objects.select_related('usuario').all().order_by('nombre')
     serializer_class = SobreSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get_queryset(self):
         user = self.request.user
+        queryset = Sobres.objects.select_related('usuario')
         
         if user.is_authenticated:
-            queryset = Sobres.objects.filter(usuario=user)
+            queryset = queryset.filter(usuario=user)
         else:
-            queryset = Sobres.objects.filter(is_public=True)
+            queryset = queryset.filter(is_public=True)
             
         return queryset.order_by('-activo', 'nombre')
 
@@ -39,3 +41,23 @@ class SobreViewSet(viewsets.ModelViewSet):
         
         serializer = self.get_serializer(sobre)
         return Response(serializer.data)
+    
+    @action(detail=False, methods=['post'],url_path="repartir")
+    def repartir(self,request,pk=None):
+        try:
+            respuesta_visual="Ha ocurrido un error inesperado"
+            monto =Decimal(str(request.data.get("monto")))
+            print(monto)
+            if not  monto:
+                return Response({'status': '400, No se envio un monto'})
+            if monto < 0: 
+                return Response({'status': '400, El monto debe ser mayor a cero'})
+            user = self.request.user
+            respuesta_visual=Sobres.repartir_monto_global(monto,user)
+            return Response({'status': '200 OK' , "respuesta_visual":respuesta_visual})
+        except Exception as e:
+            return Response({
+                'status': '400',
+                'error_real': str(e),
+                'contexto': 'Hubo un error inesperado'
+            }, status=400)
