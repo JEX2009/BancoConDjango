@@ -6,34 +6,43 @@ from django.db.models.functions import Coalesce
 
 class SobreSerializer(serializers.ModelSerializer):
     usuario_read = serializers.ReadOnlyField(source='usuario.username')
+
     class Meta:
         model = m.Sobres
-        fields= ['id','nombre','saldo','limite','activo','porcentaje','fecha_creacion', 'usuario_read']
-        read_only_fields=['fecha_creacion','id','usuario_read']
+        fields = ['id', 'nombre', 'saldo', 'limite', 'activo', 'porcentaje', 'fecha_creacion', 'usuario_read']
+        read_only_fields = ['fecha_creacion', 'id', 'usuario_read']
+
+    def validate(self, data):
+        # 1. Validaciones básicas de lógica
+        saldo = data.get('saldo', self.instance.saldo if self.instance else 0)
+        limite = data.get('limite', self.instance.limite if self.instance else 0)
         
-    def validate(self,data):
-        saldo = data.get('saldo')
-        limite = data.get('limite')
-        if saldo is not None and limite is not None and saldo > limite:
+        if saldo > limite and limite != 0: 
             raise serializers.ValidationError({
-                "saldo": "El saldo no puede superar el límite del sobre."
+                "error": "El saldo no puede superar el límite del sobre."
             })
-        return data 
-        
-    def validate_porcentaje(self, value): 
-        usuario = self.context['request'].user
 
-        with transaction.atomic():
-            if self.instance and self.instance.id:
-                queryset = m.Sobres.objects.filter(usuario=usuario, activo=True).exclude(id=self.instance.id)
-            else:
-                queryset = m.Sobres.objects.filter(usuario=usuario, activo=True)
+        nuevo_porcentaje = data.get('porcentaje')
 
-            total_acumulado = queryset.aggregate(total=Coalesce(Sum('porcentaje'), Value(0)))['total']
-
-            if total_acumulado + value > 100:
-                raise serializers.ValidationError(
-                    f"Solo te queda un {100 - total_acumulado}% disponible"
+        if nuevo_porcentaje is not None:
+            usuario = self.context['request'].user
+            
+            with transaction.atomic():
+                queryset = m.Sobres.objects.select_for_update().filter(
+                    usuario=usuario, 
+                    activo=True
                 )
 
-        return value
+                if self.instance and self.instance.id:
+                    queryset = queryset.exclude(id=self.instance.id)
+
+                total_acumulado = queryset.aggregate(
+                    total=Coalesce(Sum('porcentaje'), Value(0))
+                )['total']
+
+                if total_acumulado + nuevo_porcentaje > 100:
+                    raise serializers.ValidationError({
+                        "error": f"Solo te queda un {100 - total_acumulado}% disponible para repartir."
+                    })
+
+        return data

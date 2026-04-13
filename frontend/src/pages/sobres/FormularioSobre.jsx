@@ -2,14 +2,13 @@ import { useForm } from "react-hook-form";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import ErrorMessage from "../../components/ErrorMessage";
 
-export default function FormularioSobre({ cargandoPost, errorPost, postSobres, cerrarModal,setInformacion }) {
+export default function FormularioSobre({ cargandoPost, errorPost, postSobres, cerrarModal }) {
     const { register, handleSubmit, formState: { errors }, reset,watch } = useForm();
 
-    const limiteActual = watch("limite"); // Observa el valor del límite
+    const limiteActual = watch("limite"); 
     const enviar = async (data) => {
         await postSobres(data);
         if (!errorPost) {
-            setInformacion("Se agrego el sobre con exito");
             cerrarModal();
         } else {
             reset();

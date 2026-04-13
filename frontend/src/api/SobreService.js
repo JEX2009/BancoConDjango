@@ -24,7 +24,7 @@ export const sobreService = {
         await api.post(`Sobres/${id}/reactivar/`);
     },
     repartir: async (monto) => {
-        const response = await api.post('Sobres/repartir/', monto)
+        const response = await api.post('Sobres/repartir/', monto);
         return response.data;
     }
 };

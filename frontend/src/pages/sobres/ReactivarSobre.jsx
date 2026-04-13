@@ -1,12 +1,11 @@
 import ErrorMessage from "../../components/ErrorMessage";
 import LoadingSpinner from "../../components/LoadingSpinner";
 
-export default function ReactivarSobre({ cerrarModal, setInformacion, sobre, cargandoReactivar, errorReactivar, reactivar }) {
+export default function ReactivarSobre({ cerrarModal, sobre, cargandoReactivar, errorReactivar, reactivar }) {
     
     const manejadorReactivar = async () => {
         await reactivar(sobre.id);
         if (!errorReactivar) {
-            setInformacion(`¡Excelente! El sobre "${sobre.nombre}" está activo de nuevo.`);
             cerrarModal();
         }
     };

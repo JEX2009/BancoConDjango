@@ -2,18 +2,15 @@ import ErrorMessage from "../../components/ErrorMessage";
 import LoadingSpinner from "../../components/LoadingSpinner";
 
 export default function DesactivarSobre({ cargandoDel, errorDel, del, cerrarModal, setInformacion, sobre }) {
-    
+
     const manejadorDesactivar = async () => {
         await del(sobre.id);
-        if (!errorDel) {
-            setInformacion(`Se ha desactivado con éxito el sobre "${sobre.nombre}"`);
-            cerrarModal();
-        }
+        cerrarModal();
     };
 
     return (
         <div className="flex flex-col items-center p-4 text-center max-w-sm mx-auto">
-            
+
             {/* 1. Icono de Advertencia */}
             <div className="w-20 h-20 bg-amber-50 text-amber-500 rounded-full flex items-center justify-center mb-6 animate-pulse">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -24,7 +21,7 @@ export default function DesactivarSobre({ cargandoDel, errorDel, del, cerrarModa
             {/* 2. Texto Explicativo */}
             <h3 className="text-2xl font-black text-gray-800 mb-3">¿Desactivar sobre?</h3>
             <p className="text-gray-500 text-sm leading-relaxed mb-8">
-                Estás a punto de desactivar <span className="font-bold text-gray-700">"{sobre.nombre}"</span>. 
+                Estás a punto de desactivar <span className="font-bold text-gray-700">"{sobre.nombre}"</span>.
                 Este sobre dejará de recibir fondos automáticamente, pero podrás reactivarlo cuando quieras.
             </p>
 
