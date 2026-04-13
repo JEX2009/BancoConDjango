@@ -57,12 +57,6 @@ export default function VerSobre({ sobre }) {
                         <span className="text-[10px] font-bold text-gray-400 uppercase">Distribución</span>
                         <div className="flex items-center gap-2 mt-1">
                             <span className="text-sm font-bold text-indigo-600">{sobre.porcentaje}%</span>
-                            <div className="flex-1 bg-gray-200 rounded-full h-1.5 overflow-hidden">
-                                <div
-                                    className="bg-indigo-500 h-full transition-all duration-500"
-                                    style={{ width: `${sobre.porcentaje}%` }}
-                                ></div>
-                            </div>
                         </div>
                     </div>
                 </div>

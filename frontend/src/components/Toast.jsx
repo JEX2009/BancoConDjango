@@ -1,26 +1,49 @@
-export default function Toast({ information, setInformation,exito }) {
-    if (!information) return null;
+    import { useEffect } from 'react';
 
-    return (
-        <div className="fixed bottom-5 right-5 z-50 animate-bounce">
-            <div className={`flex items-center p-4 rounded-lg shadow-xl border-l-4 transition-all duration-300 ${
-                exito
-                    ? "bg-green-100 border-green-500 text-green-700"
-                    : "bg-red-100 border-red-500 text-red-700"
-            }`}>
-                <span className="mr-2">
-                    {exito ? "✅" : "⚠️"}
-                </span>
-                <p className="font-bold text-sm">
-                    {information}
-                </p>
-                <button
-                    onClick={() => setInformation("")}
-                    className="ml-4 text-gray-400 hover:text-gray-600 font-bold"
-                >
-                    ✕
-                </button>
+    export default function Toast({ message, type = "success", setInformation }) {
+
+        useEffect(() => {
+            const timer = setTimeout(() => {
+                setInformation("");
+            }, 5000);
+            return () => clearTimeout(timer);
+        }, [message, setInformation]);
+
+        if (!message) return null;
+
+        const isSuccess = type === "success";
+
+        return (
+            <div className="fixed bottom-8 right-8 z-50 animate-in fade-in slide-in-from-bottom-5 duration-300">
+                <div className={`flex items-center p-5 rounded-[24px] shadow-2xl border backdrop-blur-md transition-all ${
+                    isSuccess
+                        ? "bg-white/90 border-green-100 text-green-800 shadow-green-100/50"
+                        : "bg-white/90 border-red-100 text-red-800 shadow-red-100/50"
+                }`}>
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center mr-4 ${
+                        isSuccess ? "bg-green-50" : "bg-red-50"
+                    }`}>
+                        <span className="text-sm">
+                            {isSuccess ? "₡" : "!"}
+                        </span>
+                    </div>
+
+                    <div className="flex flex-col">
+                        <p className="text-[10px] font-black uppercase tracking-[0.2em] opacity-50 mb-0.5">
+                            {isSuccess ? "Éxito" : "Atención"}
+                        </p>
+                        <p className="font-bold text-xs tracking-tight">
+                            {message}
+                        </p>
+                    </div>
+
+                    <button
+                        onClick={() => setInformation("")}
+                        className="ml-8 w-6 h-6 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors text-[10px] text-gray-400"
+                    >
+                        ✕
+                    </button>
+                </div>
             </div>
-        </div>
-    );
-}
+        );
+    }

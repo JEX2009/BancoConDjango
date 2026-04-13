@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useSobres } from './hooks/useSobres'
 import PopUp from '../../components/PopUp'
 import VerSobre from './VerSobre'
 import EditarSobre from './EditarSobre'
@@ -15,9 +14,7 @@ import { IoChevronBackSharp } from "react-icons/io5";
 import { IoChevronForward } from "react-icons/io5";
 
 
-export default function Sobres({ isAuthenticated }) {
-    const { datosGet, cargandoGet, errorGet, getSobres, cargandoPost, errorPost, exitoPost, postSobres, cargandoPut, errorPut, exitoPut, putSobre, exitoDel, cargandoDel, errorDel, del, exitoReactivar, cargandoReactivar, errorReactivar, reactivar } = useSobres();
-
+export default function Sobres({ isAuthenticated,datosGet, cargandoGet, errorGet, getSobres, cargandoPost, errorPost, exitoPost, postSobres, cargandoPut, errorPut, exitoPut, putSobre, exitoDel, cargandoDel, errorDel, del, exitoReactivar, cargandoReactivar, errorReactivar, reactivar  }) {
 
     const [modal, setModal] = useState(false);
     const [action, setAccion] = useState("");
@@ -228,7 +225,6 @@ export default function Sobres({ isAuthenticated }) {
             <Toast
                 information={informacion}
                 setInformation={setInformacion}
-                exito={exitoPost || exitoPut || exitoDel || exitoReactivar}
             />
         </div>
     );
