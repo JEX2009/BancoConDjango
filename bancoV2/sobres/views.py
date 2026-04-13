@@ -1,9 +1,10 @@
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from .models import Sobres
 from .serializers import SobreSerializer
 from decimal import Decimal
+from rest_framework.exceptions import ValidationError, ParseError
 
 class SobreViewSet(viewsets.ModelViewSet):
     queryset = Sobres.objects.select_related('usuario').all().order_by('nombre')
@@ -44,20 +45,27 @@ class SobreViewSet(viewsets.ModelViewSet):
     
     @action(detail=False, methods=['post'],url_path="repartir")
     def repartir(self,request,pk=None):
+        monto_raw = request.data.get("monto")
+    
+        if monto_raw is None or str(monto_raw).strip() == "":
+            return Response(
+                {"error": "El monto es requerido"}, 
+                status=status.HTTP_400_BAD_REQUEST
+        )
+        
         try:
             respuesta_visual="Ha ocurrido un error inesperado"
-            monto =Decimal(str(request.data.get("monto")))
-            print(monto)
-            if not  monto:
-                return Response({'status': '400, No se envio un monto'})
-            if monto < 0: 
-                return Response({'status': '400, El monto debe ser mayor a cero'})
+            monto = Decimal(str(monto_raw))
+            if monto <= 0:
+                raise ValidationError({"error": "El monto debe ser mayor a cero"})
             user = self.request.user
             respuesta_visual=Sobres.repartir_monto_global(monto,user)
-            return Response({'status': '200 OK' , "respuesta_visual":respuesta_visual})
+            return Response(respuesta_visual, status=status.HTTP_200_OK)
+        except ValueError as e:
+            raise ValidationError({"error": str(e)})
+        
         except Exception as e:
-            return Response({
-                'status': '400',
-                'error_real': str(e),
-                'contexto': 'Hubo un error inesperado'
-            }, status=400)
+            return Response(
+                {"error": "Error inesperado", "code": "unknown_error", "real": e}, 
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )

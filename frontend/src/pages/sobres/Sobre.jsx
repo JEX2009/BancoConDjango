@@ -1,53 +1,71 @@
 export default function Sobre({ sobre, modalAccion }) {
     const isDisabled = !sobre.activo;
 
-    const getButtonClass = (baseColor) => {
-        const activeStyles = `bg-${baseColor}-500 hover:bg-${baseColor}-600`;
-        const disabledStyles = "bg-gray-400 cursor-not-allowed opacity-60";
-
-        return `px-3 py-1 text-white rounded transition-colors ${isDisabled ? disabledStyles : activeStyles
-            }`;
+    const colors = {
+        blue: "bg-blue-600 hover:bg-blue-700 shadow-blue-100",
+        amber: "bg-amber-500 hover:bg-amber-600 shadow-amber-100",
+        red: "bg-red-500 hover:bg-red-600 shadow-red-100",
+        green: "bg-green-500 hover:bg-green-600 shadow-green-100"
     };
-    return (<div
-        className={`flex flex-row justify-between items-center p-4 my-2 rounded-lg shadow-sm ${sobre.activo ? 'border-l-4 border-green-600 bg-white' : 'border-l-4 border-red-600 bg-gray-50'}`}
-    >
-        {/* Lado Izquierdo: Información del sobre */}
-        <div className="flex flex-col">
-            <h4 className="text-lg font-bold"> Nombre: {sobre.nombre}</h4>
-            <span className="text-gray-600 font-medium">Saldo Actual: ₡{sobre.saldo}</span>
-        </div>
-        <div className='flex flex-row gap-2 items-center'>
-            <button
-                className={getButtonClass('blue')}
-                onClick={() => !isDisabled && modalAccion("see", sobre)}
-                disabled={isDisabled}
-            >
-                Ver
-            </button>
 
-            <button
-                className={getButtonClass('amber')}
-                onClick={() => !isDisabled && modalAccion("edit", sobre)}
-                disabled={isDisabled}
-            >
-                Modificar
-            </button>
+    const getButtonClass = (colorKey) => {
+        const baseStyles = "px-4 py-2 text-[11px] font-black uppercase tracking-widest text-white rounded-xl transition-all active:scale-95 shadow-lg";
+        const disabledStyles = "bg-gray-200 text-gray-400 cursor-not-allowed shadow-none";
+        
+        return `${baseStyles} ${isDisabled ? disabledStyles : colors[colorKey]}`;
+    };
 
-            {sobre.activo ? (
+    return (
+        <div className={`flex flex-row justify-between items-center p-6 my-3 rounded-[2rem] border transition-all ${
+            sobre.activo 
+            ? 'border-gray-100 bg-white shadow-sm' 
+            : 'border-transparent bg-gray-50 opacity-80'
+        }`}>
+            {/* Lado Izquierdo */}
+            <div className="flex flex-col">
+                <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Sobre</span>
+                <h4 className="text-lg font-black text-gray-800 tracking-tighter italic">
+                    {sobre.nombre}
+                </h4>
+                <span className={`text-sm font-bold mt-1 ${sobre.activo ? 'text-indigo-600' : 'text-gray-400'}`}>
+                    ₡{sobre.saldo}
+                </span>
+            </div>
+
+            {/* Acciones */}
+            <div className='flex flex-row gap-3 items-center'>
                 <button
-                    className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-700 transition-colors"
-                    onClick={() => modalAccion("deactivate", sobre)}
+                    className={getButtonClass('blue')}
+                    onClick={() => !isDisabled && modalAccion("see", sobre)}
+                    disabled={isDisabled}
                 >
-                    Desactivar
+                    Ver
                 </button>
-            ) : (
+
                 <button
-                    className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-700 transition-colors"
-                    onClick={() => modalAccion("reactivate", sobre)}
+                    className={getButtonClass('amber')}
+                    onClick={() => !isDisabled && modalAccion("edit", sobre)}
+                    disabled={isDisabled}
                 >
-                    Re Activar 
+                    Editar
                 </button>
-            )}
+
+                {sobre.activo ? (
+                    <button
+                        className="px-4 py-2 bg-gray-900 text-white text-[11px] font-black uppercase tracking-widest rounded-xl hover:bg-black transition-all shadow-lg shadow-gray-200"
+                        onClick={() => modalAccion("deactivate", sobre)}
+                    >
+                        Desactivar
+                    </button>
+                ) : (
+                    <button
+                        className="px-4 py-2 bg-green-500 text-white text-[11px] font-black uppercase tracking-widest rounded-xl hover:bg-green-600 transition-all shadow-lg shadow-green-100"
+                        onClick={() => modalAccion("reactivate", sobre)}
+                    >
+                        Activar
+                    </button>
+                )}
+            </div>
         </div>
-    </div>)
+    );
 }

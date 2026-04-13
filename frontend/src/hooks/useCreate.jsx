@@ -3,7 +3,7 @@ import { useState } from "react";
 export default function useCreate(createFunction, actualizeFunction = null) {
     const [exitoPost, setExito] = useState(false);
     const [cargandoPost, setCargando] = useState(false);
-    const [errorPost, setError] = useState(false);
+    const [errorPost, setError] = useState("");
 
 
     const post = async (dataToSend) => {
@@ -14,14 +14,14 @@ export default function useCreate(createFunction, actualizeFunction = null) {
                 actualizeFunction();
             }
             setExito(true);
-            console.log("Respuesta cruda en Hook:", response);
             return response;
         } catch (error) {
-            setError(true);
+            // console.log(error.response.data.error);
+            setError(error.response.data.error);
         } finally {
             setCargando(false);
             setTimeout(() => {
-                setError(false);
+                setError("");
                 setExito(false)
             }, 5000);
         }

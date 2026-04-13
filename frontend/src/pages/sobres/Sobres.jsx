@@ -1,31 +1,38 @@
 import { useEffect, useMemo, useState } from 'react';
-import PopUp from '../../components/PopUp'
-import VerSobre from './VerSobre'
-import EditarSobre from './EditarSobre'
-import DesactivarSobre from './DesactivarSobre'
-import ReactivarSobre from './ReactivarSobre'
-import FormularioSobre from './FormularioSobre'
+import PopUp from '../../components/PopUp';
+import VerSobre from './VerSobre';
+import EditarSobre from './EditarSobre';
+import DesactivarSobre from './DesactivarSobre';
+import ReactivarSobre from './ReactivarSobre';
+import FormularioSobre from './FormularioSobre';
 import ErrorMessage from '../../components/ErrorMessage';
 import Sobre from './Sobre';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import Toast from '../../components/Toast';
 import usePaginador from '../../hooks/usePaginador';
-import { IoChevronBackSharp } from "react-icons/io5";
-import { IoChevronForward } from "react-icons/io5";
+import { IoChevronBackSharp, IoChevronForward } from "react-icons/io5";
 
-
-export default function Sobres({ isAuthenticated,datosGet, cargandoGet, errorGet, getSobres, cargandoPost, errorPost, exitoPost, postSobres, cargandoPut, errorPut, exitoPut, putSobre, exitoDel, cargandoDel, errorDel, del, exitoReactivar, cargandoReactivar, errorReactivar, reactivar  }) {
+export default function Sobres({
+    isAuthenticated, datosGet, cargandoGet, errorGet, getSobres,
+    cargandoPost, errorPost, exitoPost, postSobres,
+    cargandoPut, errorPut, exitoPut, putSobre,
+    exitoDel, cargandoDel, errorDel, del,
+    exitoReactivar, cargandoReactivar, errorReactivar, reactivar
+}) {
 
     const [modal, setModal] = useState(false);
     const [action, setAccion] = useState("");
     const [sobre, setSobre] = useState();
-    const [informacion, setInformacion] = useState("");
+
+    // --- ESTADO UNIFICADO DEL TOAST ---
+    const [toast, setToast] = useState({ message: "", type: "success" });
+
     const [filtroNombre, setFiltroNombre] = useState("");
     const [filtroActivo, setFiltroActivo] = useState("todos");
 
+    // Lógica de filtrado
     const filtrado = useMemo(() => {
         if (!datosGet) return [];
-
         return datosGet.filter((sobre) => {
             const coincideNombre = sobre.nombre.toLowerCase().includes(filtroNombre.toLowerCase());
             const coincideEstado = filtroActivo === "todos" ? true : sobre.activo === filtroActivo;
@@ -35,81 +42,64 @@ export default function Sobres({ isAuthenticated,datosGet, cargandoGet, errorGet
 
     const { elementosPaginados, siguiente, anterior, paginaActual, totalPaginas, esPrimeraPagina, esUltimaPagina } = usePaginador(filtrado, 5);
 
-    const cerrarModal = () => {
-        setModal(false);
-    };
+    // --- MANEJO DE NOTIFICACIONES (EFECTOS) ---
+    useEffect(() => {
+        if (exitoPost) setToast({ message: "Sobre creado con éxito", type: "success" });
+    }, [exitoPost]);
+
+    useEffect(() => {
+        if (exitoPut) setToast({ message: "Cambios guardados", type: "success" });
+    }, [exitoPut]);
+
+    useEffect(() => {
+        if (exitoDel) setToast({ message: "Sobre desactivado", type: "success" });
+    }, [exitoDel]);
+
+    useEffect(() => {
+        if (exitoReactivar) setToast({ message: "Sobre reactivado", type: "success" });
+    }, [exitoReactivar]);
+
+    useEffect(() => {
+        const error = errorPost || errorPut || errorDel || errorReactivar;
+        const mensaje = error
+        console.log(mensaje)
+        if (error) {
+            setToast({
+                message: error[0] ? error[0] : "Error al procesar la solicitud",
+                type: "error"
+            });
+        }
+    }, [errorPost, errorPut, errorDel, errorReactivar]);
+
+    // --- FUNCIONES ---
+    const cerrarModal = () => setModal(false);
 
     const manejadorSelect = (valor) => {
-        if (valor === "todos") {
-            setFiltroActivo("todos");
-        } else {
-            setFiltroActivo(valor === "true");
-        }
+        if (valor === "todos") setFiltroActivo("todos");
+        else setFiltroActivo(valor === "true");
     };
 
     const modalAccion = (realizatedAction, sobre) => {
-        setModal(true)
+        setModal(true);
         setAccion(realizatedAction);
-        setSobre(sobre)
+        setSobre(sobre);
     };
 
     useEffect(() => {
         getSobres();
     }, []);
 
-    if (cargandoGet) {
-        return (
-            <LoadingSpinner />
-        )
-    };
-    if (errorGet) {
-        return (
-            <ErrorMessage
-                message={errorGet}
-            />
-        )
-    };
+    if (cargandoGet) return <LoadingSpinner />;
+    if (errorGet) return <ErrorMessage message={errorGet} />;
+
     return (
         <div className="max-w-4xl mx-auto px-4 py-4">
             <PopUp closeModal={cerrarModal} isModalOpen={modal}>
-                {
-                    action === "see" ?
-                        (<VerSobre sobre={sobre} />) :
-                        action === "edit" ?
-                            (<EditarSobre
-                                cargandoPut={cargandoPut}
-                                errorPut={errorPut}
-                                putSobre={putSobre}
-                                cerrarModal={cerrarModal}
-                                setInformacion={setInformacion}
-                                sobre={sobre}
-                            />) :
-                            action === "form" ?
-                                (<FormularioSobre
-                                    cargandoPost={cargandoPost}
-                                    errorPost={errorPost}
-                                    postSobres={postSobres}
-                                    cerrarModal={cerrarModal}
-                                    setInformacion={setInformacion}
-                                />) :
-                                action === "deactivate" ?
-                                    (<DesactivarSobre
-                                        cargandoDel={cargandoDel}
-                                        errorDel={errorDel}
-                                        del={del}
-                                        cerrarModal={cerrarModal}
-                                        setInformacion={setInformacion}
-                                        sobre={sobre}
-                                    />) :
-                                    (<ReactivarSobre
-                                        cerrarModal={cerrarModal}
-                                        setInformacion={setInformacion}
-                                        sobre={sobre}
-                                        cargandoReactivar={cargandoReactivar}
-                                        errorReactivar={errorReactivar}
-                                        reactivar={reactivar}
-                                    />)
-                }
+                {action === "see" ? <VerSobre sobre={sobre} /> :
+                    action === "edit" ? <EditarSobre cargandoPut={cargandoPut} errorPut={errorPut} putSobre={putSobre} cerrarModal={cerrarModal} sobre={sobre} /> :
+                        action === "form" ? <FormularioSobre cargandoPost={cargandoPost} errorPost={errorPost} postSobres={postSobres} cerrarModal={cerrarModal} /> :
+                            action === "deactivate" ? <DesactivarSobre cargandoDel={cargandoDel} errorDel={errorDel} del={del} cerrarModal={cerrarModal} sobre={sobre} /> :
+                                <ReactivarSobre cerrarModal={cerrarModal} sobre={sobre} cargandoReactivar={cargandoReactivar} errorReactivar={errorReactivar} reactivar={reactivar} />}
             </PopUp>
 
             {/* Cabecera */}
@@ -128,31 +118,24 @@ export default function Sobres({ isAuthenticated,datosGet, cargandoGet, errorGet
                 </button>
             </div>
 
-            {/* Filtros*/}
+            {/* Filtros */}
             <div className="max-w-2xl w-full mb-8 group">
                 <div className="flex flex-row gap-4 ml-4 mb-2">
-                    <label className="flex-1 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] transition-colors group-focus-within:text-indigo-500">
-                        Buscar por nombre
-                    </label>
-                    <label className="w-40 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] transition-colors group-focus-within:text-indigo-500">
-                        Estado
-                    </label>
+                    <label className="flex-1 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Buscar por nombre</label>
+                    <label className="w-40 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Estado</label>
                 </div>
-
                 <div className="flex flex-col sm:flex-row gap-3">
-                    <div className="relative flex-1">
-                        <input
-                            type="text"
-                            placeholder="Escribe para buscar..."
-                            value={filtroNombre}
-                            onChange={(e) => setFiltroNombre(e.target.value)}
-                            className="w-full px-6 py-4 bg-gray-50 border-2 border-transparent rounded-2xl text-gray-700 font-medium placeholder-gray-300 focus:bg-white focus:border-indigo-500 focus:ring-0 transition-all duration-300 shadow-inner"
-                        />
-                    </div>
+                    <input
+                        type="text"
+                        placeholder="Escribe para buscar..."
+                        value={filtroNombre}
+                        onChange={(e) => setFiltroNombre(e.target.value)}
+                        className="flex-1 px-6 py-4 bg-gray-50 border-2 border-transparent rounded-2xl text-gray-700 font-medium focus:bg-white focus:border-indigo-500 outline-none transition-all shadow-inner"
+                    />
                     <select
                         value={filtroActivo}
                         onChange={(e) => manejadorSelect(e.target.value)}
-                        className="w-full sm:w-40 px-4 py-4 bg-gray-50 border-2 border-transparent rounded-2xl text-sm font-bold text-gray-600 appearance-none cursor-pointer focus:bg-white focus:border-indigo-500 transition-all duration-300 shadow-inner text-center"
+                        className="w-full sm:w-40 px-4 py-4 bg-gray-50 border-2 border-transparent rounded-2xl text-sm font-bold text-gray-600 focus:bg-white focus:border-indigo-500 outline-none cursor-pointer transition-all shadow-inner text-center"
                     >
                         <option value="todos">Todos</option>
                         <option value="true">Activos</option>
@@ -161,70 +144,43 @@ export default function Sobres({ isAuthenticated,datosGet, cargandoGet, errorGet
                 </div>
             </div>
 
-            {/* Listado de Sobres con Espacio Mínimo */}
-            <div
-                key={`${paginaActual}-${filtroNombre}`}
-                className="min-h-[450px] mb-10 space-y-4 animate-fade-in-list"
-            >
+            {/* Listado */}
+            <div key={`${paginaActual}-${filtroNombre}`} className="min-h-[450px] mb-10 space-y-4">
                 {elementosPaginados.length > 0 ? (
                     elementosPaginados.map(sobre => (
-                        <Sobre
-                            key={sobre.id}
-                            modalAccion={modalAccion}
-                            sobre={sobre}
-                        />
+                        <Sobre key={sobre.id} modalAccion={modalAccion} sobre={sobre} />
                     ))
                 ) : (
-                    <div className="flex flex-col items-center justify-center py-20 bg-gray-50/50 rounded-[2rem] border-2 border-dashed border-gray-100 animate-fade-in-list">
-                        <p className="text-gray-400 font-medium italic text-sm">No hay sobres que coincidan con tu búsqueda</p>
+                    <div className="flex flex-col items-center justify-center py-20 bg-gray-50/50 rounded-[2rem] border-2 border-dashed border-gray-100">
+                        <p className="text-gray-400 font-medium italic text-sm">No hay resultados</p>
                     </div>
                 )}
             </div>
 
-            {/* Paginador Estilizado */}
-            {/* Paginador Estilizado */}
+            {/* Paginador */}
             {totalPaginas > 1 && (
                 <div className="flex items-center justify-between bg-white p-2 rounded-2xl border border-gray-100 shadow-sm max-w-sm mx-auto">
-
-                    {/* Botón Atrás */}
-                    <button
-                        onClick={anterior}
-                        disabled={esPrimeraPagina}
-                        className="flex items-center justify-center w-12 h-12 rounded-xl transition-all duration-300 group hover:bg-indigo-50 disabled:opacity-20 disabled:cursor-not-allowed"
-                    >
-                        <IoChevronBackSharp
-                            className={`text-2xl transition-colors ${esPrimeraPagina ? 'text-gray-400' : 'text-indigo-600 group-hover:scale-110'
-                                }`}
-                        />
+                    <button onClick={anterior} disabled={esPrimeraPagina} className="flex items-center justify-center w-12 h-12 rounded-xl transition-all hover:bg-indigo-50 disabled:opacity-20">
+                        <IoChevronBackSharp className="text-2xl text-indigo-600" />
                     </button>
-
-                    {/* Indicador central */}
-                    <div className="flex flex-col items-center">
-                        <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-0.5">Página</span>
+                    <div className="flex flex-col items-center text-center">
+                        <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Página</span>
                         <div className="flex items-baseline gap-1">
-                            <span className="text-xl font-black text-indigo-600 leading-none">{paginaActual}</span>
-                            <span className="text-xs font-bold text-gray-300">/</span>
-                            <span className="text-sm font-bold text-gray-400">{totalPaginas}</span>
+                            <span className="text-xl font-black text-indigo-600">{paginaActual}</span>
+                            <span className="text-sm font-bold text-gray-400">/ {totalPaginas}</span>
                         </div>
                     </div>
-
-                    {/* Botón Siguiente */}
-                    <button
-                        onClick={siguiente}
-                        disabled={esUltimaPagina}
-                        className="flex items-center justify-center w-12 h-12 rounded-xl transition-all duration-300 group hover:bg-indigo-50 disabled:opacity-20 disabled:cursor-not-allowed"
-                    >
-                        <IoChevronForward
-                            className={`text-2xl transition-colors ${esUltimaPagina ? 'text-gray-400' : 'text-indigo-600 group-hover:scale-110'
-                                }`}
-                        />
+                    <button onClick={siguiente} disabled={esUltimaPagina} className="flex items-center justify-center w-12 h-12 rounded-xl transition-all hover:bg-indigo-50 disabled:opacity-20">
+                        <IoChevronForward className="text-2xl text-indigo-600" />
                     </button>
                 </div>
             )}
 
+            {/* TOAST UNIFICADO */}
             <Toast
-                information={informacion}
-                setInformation={setInformacion}
+                message={toast.message}
+                type={toast.type}
+                setInformation={(msg) => setToast(prev => ({ ...prev, message: msg }))}
             />
         </div>
     );

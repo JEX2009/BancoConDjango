@@ -20,15 +20,14 @@ export default function Reparto_Masivo({ autenticado }) {
     }, [exitoPost, reset]);
 
     useEffect(() => {
-        if (errorPost) {
-            setToastConfig({ message: errorPost || "Error al procesar el reparto", type: "error" });
+        if (errorPost != "") {
+            setToastConfig({ message:"Error al procesar el reparto", type: "error" });
         }
     }, [errorPost]);
 
     const onSubmit = async (data) => {
         setDesglose(null);
         const apiRespuesta = await post(data);
-        console.log(apiRespuesta)
         if (apiRespuesta && apiRespuesta.respuesta_visual) {
             setDesglose(apiRespuesta.respuesta_visual);
         }
@@ -130,7 +129,7 @@ export default function Reparto_Masivo({ autenticado }) {
                 </form>
             </div>
 
-            {errorPost && <ErrorMessage message={errorPost} />}
+            {errorPost!="" && <ErrorMessage message={errorPost} />}
         </div>
     );
 }
