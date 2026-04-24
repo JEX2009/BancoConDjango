@@ -1,6 +1,6 @@
 export default function Sobre({ sobre, modalAccion }) {
     const isDisabled = !sobre.activo;
-
+    
     const colors = {
         blue: "bg-blue-600 hover:bg-blue-700 shadow-blue-100",
         amber: "bg-amber-500 hover:bg-amber-600 shadow-amber-100",
@@ -9,7 +9,7 @@ export default function Sobre({ sobre, modalAccion }) {
     };
 
     const getButtonClass = (colorKey) => {
-        const baseStyles = "px-4 py-2 text-[11px] font-black uppercase tracking-widest text-white rounded-xl transition-all active:scale-95 shadow-lg";
+        const baseStyles = "px-4 py-2 text-[11px] uppercase tracking-widest font-bold text-white rounded-xl transition-all active:scale-95 shadow-lg";
         const disabledStyles = "bg-gray-200 text-gray-400 cursor-not-allowed shadow-none";
         
         return `${baseStyles} ${isDisabled ? disabledStyles : colors[colorKey]}`;
@@ -24,7 +24,7 @@ export default function Sobre({ sobre, modalAccion }) {
             {/* Lado Izquierdo */}
             <div className="flex flex-col">
                 <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Sobre</span>
-                <h4 className="text-lg font-black text-gray-800 tracking-tighter italic">
+                <h4 className="text-lg font-bold text-gray-800 tracking-tighter italic">
                     {sobre.nombre}
                 </h4>
                 <span className={`text-sm font-bold mt-1 ${sobre.activo ? 'text-indigo-600' : 'text-gray-400'}`}>

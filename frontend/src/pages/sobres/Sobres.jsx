@@ -62,7 +62,6 @@ export default function Sobres({
     useEffect(() => {
         const error = errorPost || errorPut || errorDel || errorReactivar;
         const mensaje = error
-        console.log(mensaje)
         if (error) {
             setToast({
                 message: error[0] ? error[0] : "Error al procesar la solicitud",

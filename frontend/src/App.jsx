@@ -69,10 +69,6 @@ export default function App() {
         />} />
         <Route path="/Reparto-Masivo" element={<Reparto_Masivo
           autenticado={autenticado}
-          datosGet={datosGet}
-          cargandoGet={cargandoGet}
-          errorGet={errorGet}
-          getSobres={getSobres}
         />} />
         <Route element={<ProtectedRoute autenticado={autenticado} loading={loading} />}>
         </Route>

@@ -26,5 +26,9 @@ export const sobreService = {
     repartir: async (monto) => {
         const response = await api.post('Sobres/repartir/', monto);
         return response.data;
+    },
+    ingreso_egreso: async (send_data) => {
+        const response = await api.post('Sobres/ingreso_egreso/', send_data);
+        return response.data;
     }
 };
