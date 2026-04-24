@@ -2,6 +2,7 @@ import { Controller } from 'react-hook-form';
 import Select from 'react-select';
 
 const CustomSelectReactForm = ({ name, control, options, placeholder, rules, isMulti = false, ...rest }) => {
+    
     return (
         <Controller
             name={name}
