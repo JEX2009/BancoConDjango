@@ -9,6 +9,7 @@ import Login from './pages/login/Login';
 import ProtectedRoute from './components/ProtectedRoute';
 import PanelSobres from './pages/gestiona/PanelSobres';
 import Reparto_Masivo from './pages/Reparto_Masivo/Reparto_Masivo';
+import Prestamo from './pages/prestamos/Prestamo';
 import { useSobres } from './pages/sobres/hooks/useSobres'
 
 export default function App() {
@@ -34,7 +35,9 @@ export default function App() {
   return (
     <Routes>
       <Route element={<AppLayout autenticado={autenticado} setAutenticado={setAutenticado} setError={setError} />}>
-        <Route path="/" element={<Inicio />} />
+        <Route path="/" element={<Inicio
+          autenticado={autenticado}
+        />} />
         <Route path="/registro" element={<Registro />} />
         <Route path="/login" element={<Login setAutenticado={setAutenticado} />} />
         <Route path="/Sobres" element={<Sobres
@@ -70,11 +73,14 @@ export default function App() {
         <Route path="/Reparto-Masivo" element={<Reparto_Masivo
           autenticado={autenticado}
         />} />
+        <Route path="/Prestamos-Sobres" element={<Prestamo
+          autenticado={autenticado}
+        />} />
         <Route element={<ProtectedRoute autenticado={autenticado} loading={loading} />}>
         </Route>
       </Route>
     </Routes>
 
-    
+
   );
 }

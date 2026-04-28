@@ -61,9 +61,9 @@ class Sobres(models.Model):
                 else :
                     monto_a_depositar = (monto_total * Decimal(sobre.porcentaje) / Decimal('100')).quantize(Decimal('0.01'))
                     if sobre.limite > 0:
-                        corroboracion_limite = monto_decimal + sobre.saldo
+                        corroboracion_limite = monto_a_depositar + sobre.saldo
                         if corroboracion_limite > sobre.limite:
-                            monto_decimal = sobre.limite - sobre.saldo
+                            monto_a_depositar = sobre.limite - sobre.saldo
             
                 
                 if monto_a_depositar > 0:
@@ -71,7 +71,7 @@ class Sobres(models.Model):
                     sobre.registrar_movimientos(
                         monto=monto_a_depositar,
                         tipo=Transaccion.Estados.DEPOSITO,
-                        descripcion=f"Reparto masivo de {monto_a_depositar}"
+                        descripcion=f"Reparto masivo de  ₡{monto_a_depositar}"
                     )
                 acumulado_repartido+= monto_a_depositar
         return respuesta_visual
@@ -93,7 +93,7 @@ class Sobres(models.Model):
                 sobre.registrar_movimientos(
                     monto=monto_decimal,
                     tipo=Transaccion.Estados.DEPOSITO,
-                    descripcion=f"Se ingresaron {monto_decimal} al sobre {sobre.nombre}"
+                    descripcion=f"Se ingresaron  ₡{monto_decimal} al sobre {sobre.nombre}"
                 )
             return {sobre.nombre: monto_decimal}
     
@@ -107,7 +107,7 @@ class Sobres(models.Model):
             sobre.registrar_movimientos(
                 monto=monto_decimal,
                 tipo=Transaccion.Estados.RETIRO,
-                descripcion=f"Se retiraron {monto_decimal} del sobre {sobre.nombre}"
+                descripcion=f"Se retiraron  ₡{monto_decimal} del sobre {sobre.nombre}"
             )
             return {sobre.nombre: monto_decimal}    
 

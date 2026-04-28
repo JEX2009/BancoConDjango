@@ -1,6 +1,6 @@
 import '/src/static/Tailwind.css';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { HiOutlineHome, HiOutlineInboxIn, HiOutlineLogout, HiOutlineUserAdd, HiOutlineLogin } from 'react-icons/hi';
+import { HiOutlineHome, HiOutlineInboxIn, HiOutlineLogout, HiOutlineUserAdd, HiOutlineLogin,HiOutlineSwitchHorizontal,HiOutlineFolderOpen,HiOutlineShare,HiOutlineReceiptTax } from 'react-icons/hi';
 import { authService } from '../api/UserService';
 
 // Componente de ítem de navegación modularizado
@@ -53,9 +53,10 @@ export default function Sidebar({ autenticado, setAutenticado, setError }) {
                 <nav className="flex-1 p-4 overflow-y-auto">
                     <ul className="space-y-1">
                         <NavItem to="/" icon={HiOutlineHome} label="Inicio" activeStyle={styloLink} />
-                        <NavItem to="/Gestion" icon={HiOutlineInboxIn} label="Ingresos y Egresos" activeStyle={styloLink} />
-                        <NavItem to="/Sobres" icon={HiOutlineInboxIn} label="Mis Sobres" activeStyle={styloLink} />
-                        <NavItem to="/Reparto-Masivo" icon={HiOutlineInboxIn} label="Reparto en Sobres" activeStyle={styloLink} />
+                        <NavItem to="/Gestion" icon={HiOutlineSwitchHorizontal} label="Ingresos y Egresos" activeStyle={styloLink} />
+                        <NavItem to="/Sobres" icon={HiOutlineFolderOpen} label="Mis Sobres" activeStyle={styloLink} />
+                        <NavItem to="/Reparto-Masivo" icon={HiOutlineShare} label="Reparto en Sobres" activeStyle={styloLink} />
+                        <NavItem to="/Prestamos-Sobres" icon={HiOutlineReceiptTax} label="Prestamos-Sobres" activeStyle={styloLink} />
                     </ul>
                 </nav>
 
