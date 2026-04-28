@@ -15,13 +15,13 @@ export default function Reparto_Masivo({ autenticado }) {
     useEffect(() => {
         if (exitoPost) {
             setToastConfig({ message: "Reparto global ejecutado con éxito", type: "success" });
-            reset(); 
+            reset();
         }
     }, [exitoPost, reset]);
 
     useEffect(() => {
         if (errorPost != "") {
-            setToastConfig({ message:"Error al procesar el reparto", type: "error" });
+            setToastConfig({ message: "Error al procesar el reparto", type: "error" });
         }
     }, [errorPost]);
 
@@ -35,11 +35,21 @@ export default function Reparto_Masivo({ autenticado }) {
 
     return (
         <div className="max-w-2xl mx-auto py-12 px-4">
-            <Toast 
-                message={toastConfig.message} 
-                type={toastConfig.type} 
-                setInformation={(val) => setToastConfig({ ...toastConfig, message: val })} 
+            <Toast
+                message={toastConfig.message}
+                type={toastConfig.type}
+                setInformation={(val) => setToastConfig({ ...toastConfig, message: val })}
             />
+            <div className="mb-10 flex justify-between items-end">
+
+                <div className="flex items-center space-x-4 mb-10">
+                    <div>
+                        <h2 className="text-3xl font-black text-gray-800 tracking-tighter">Reparto Global</h2>
+                        <p className="text-gray-400 font-medium text-sm">Distribución automática</p>
+                    </div>
+                </div>
+
+            </div>
 
             {autenticado === false && (
                 <div className="mb-6 p-4 bg-amber-50 border border-amber-100 rounded-2xl">
@@ -50,12 +60,6 @@ export default function Reparto_Masivo({ autenticado }) {
             )}
 
             <div className="bg-white rounded-[40px] p-10 shadow-sm border border-gray-100">
-                <div className="flex items-center space-x-4 mb-10">
-                    <div>
-                        <h2 className="text-xl font-black text-gray-800 tracking-tight">Reparto Global</h2>
-                        <p className="text-[10px] text-indigo-400 font-bold uppercase tracking-widest">Distribución automática</p>
-                    </div>
-                </div>
 
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
                     <div className="space-y-3">
@@ -76,9 +80,8 @@ export default function Reparto_Masivo({ autenticado }) {
                                     required: "El monto es necesario",
                                     min: { value: 0.01, message: "Mínimo ₡0.01" }
                                 })}
-                                className={`w-full pl-14 pr-8 py-6 bg-gray-50 border-none rounded-[28px] outline-none font-black text-3xl text-indigo-600 transition-all placeholder:text-gray-200 focus:ring-4 focus:ring-indigo-500/5 focus:bg-white ${
-                                    !autenticado ? "cursor-not-allowed opacity-50" : ""
-                                }`}
+                                className={`w-full pl-14 pr-8 py-6 bg-gray-50 border-none rounded-[28px] outline-none font-black text-3xl text-indigo-600 transition-all placeholder:text-gray-200 focus:ring-4 focus:ring-indigo-500/5 focus:bg-white ${!autenticado ? "cursor-not-allowed opacity-50" : ""
+                                    }`}
                                 placeholder="0.00"
                             />
                         </div>
@@ -111,11 +114,10 @@ export default function Reparto_Masivo({ autenticado }) {
                     <button
                         type="submit"
                         disabled={!autenticado || cargandoPost}
-                        className={`w-full py-5 rounded-[24px] font-black uppercase text-[11px] tracking-[0.2em] transition-all transform active:scale-[0.98] flex items-center justify-center space-x-3 ${
-                            cargandoPost
-                                ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                                : "bg-indigo-600 text-white shadow-xl shadow-indigo-100 hover:bg-indigo-700"
-                        }`}
+                        className={`w-full py-5 rounded-[24px] font-black uppercase text-[11px] tracking-[0.2em] transition-all transform active:scale-[0.98] flex items-center justify-center space-x-3 ${cargandoPost
+                            ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                            : "bg-indigo-600 text-white shadow-xl shadow-indigo-100 hover:bg-indigo-700"
+                            }`}
                     >
                         {cargandoPost ? (
                             <>
@@ -129,7 +131,7 @@ export default function Reparto_Masivo({ autenticado }) {
                 </form>
             </div>
 
-            {errorPost!="" && <ErrorMessage message={errorPost} />}
+            {errorPost != "" && <ErrorMessage message={errorPost} />}
         </div>
     );
 }

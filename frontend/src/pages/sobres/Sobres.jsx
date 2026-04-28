@@ -17,7 +17,7 @@ export default function Sobres({
     cargandoPost, errorPost, exitoPost, postSobres,
     cargandoPut, errorPut, exitoPut, putSobre,
     exitoDel, cargandoDel, errorDel, del,
-    exitoReactivar, cargandoReactivar, errorReactivar, reactivar
+    exitoReactivar, cargandoReactivar, errorReactivar, reactivar,autenticado
 }) {
 
     const [modal, setModal] = useState(false);
@@ -116,6 +116,13 @@ export default function Sobres({
                     <span className="text-xl leading-none">+</span> Agregar Sobre
                 </button>
             </div>
+            {autenticado === false && (
+                <div className="mb-6 p-4 bg-amber-50 border border-amber-100 rounded-2xl">
+                    <p className="text-amber-600 text-xs font-medium text-center">
+                        Si no hay una sesión activa no se podrán crear sobres.
+                    </p>
+                </div>
+            )}
 
             {/* Filtros */}
             <div className="max-w-2xl w-full mb-8 group">
