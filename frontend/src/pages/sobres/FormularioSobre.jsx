@@ -38,7 +38,9 @@ export default function FormularioSobre({ cargandoPost, errorPost, postSobres, c
                 <div className="flex flex-col gap-1">
                     <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Nombre del Sobre</label>
                     <input
-                        {...register("nombre", { required: "Ponle un nombre a tu sobre" })}
+                        {...register("nombre", { required: "Ponle un nombre a tu sobre", 
+                            maxLength: { value: 100, message: "Máximo 100 caracteres" }
+                        })}
                         placeholder="Es un nombre unico"
                         className={ClaseIngreso(errors.nombre)}
                     />

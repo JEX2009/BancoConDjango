@@ -14,11 +14,11 @@ export default function useInicio() {
         executeFetch();
     }, []);
 
-    const masRegistros = async (sobre_id, fecha_inicio, fecha_fin) => {
+    const masRegistros = async ( fecha_inicio, fecha_fin) => {
         try {
             setErrorRegistrosSobre(null);
             setCargandoRegistrosSobre(true);
-            const response = await transaccionService.getSobreTransacction(sobre_id, fecha_inicio, fecha_fin);
+            const response = await transaccionService.getSobreTransacction( fecha_inicio, fecha_fin);
             const data = response;
             setRegistrosSobre(data);
             return data;

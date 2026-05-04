@@ -6,6 +6,7 @@ import ErrorMessage from "../../components/ErrorMessage";
 import { HiOutlineArrowNarrowDown, HiOutlineArrowNarrowUp, HiOutlineInbox } from "react-icons/hi";
 import usePaginador from "../../hooks/usePaginador";
 import TablaTransacciones from "./TablaTransacciones";
+import FechaFormulario from "./FechaFormulario";
 
 export default function Inicio({ autenticado }) {
     const {
@@ -50,6 +51,10 @@ export default function Inicio({ autenticado }) {
                     </span>
                 )}
             </div>
+            <FechaFormulario
+                cargandoRegistrosSobre={cargandoRegistrosSobre}
+                masRegistros={masRegistros}
+            />
             {autenticado === false && (
                 <div className="mb-6 p-4 bg-amber-50 border border-amber-100 rounded-2xl">
                     <p className="text-amber-600 text-xs font-medium text-center">
@@ -72,7 +77,7 @@ export default function Inicio({ autenticado }) {
                     /* Tabla de Datos */
                     <div className="overflow-x-auto">
                         <TablaTransacciones
-                            elementosPaginados={elementosPaginados}
+                            elementosPaginados={registrosSobre ? registrosSobre : elementosPaginados}
                         />
                     </div>
                 )}
@@ -80,12 +85,8 @@ export default function Inicio({ autenticado }) {
 
             {/* Paginación y Acción Superior */}
             <div className="mt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-                <button
-                    onClick={() => masRegistros('1', '2026-04-01', '2026-04-30')}
-                    className="px-6 py-3 bg-gray-900 text-white rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] hover:bg-black transition-all shadow-lg shadow-gray-200"
-                >
-                    {cargandoRegistrosSobre ? "Cargando..." : "Aplicar Filtros"}
-                </button>
+
+
 
                 {totalPaginas > 1 && (
                     <div className="flex items-center space-x-2 bg-white p-1.5 rounded-2xl border border-gray-100">

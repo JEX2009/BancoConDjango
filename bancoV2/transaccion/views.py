@@ -21,10 +21,6 @@ class TransaccionViewSet(viewsets.ReadOnlyModelViewSet):
         fecha_inicio = self.request.query_params.get('fecha_inicio')
         fecha_fin = self.request.query_params.get('fecha_fin')
 
-        # 3. Aplicación de filtros si existen
-        if sobre_id:
-            queryset = queryset.filter(sobre_id=sobre_id)
-        
         if fecha_inicio and fecha_fin:
             # parse_date asegura que el formato sea YYYY-MM-DD
             queryset = queryset.filter(fecha_creacion__date__range=[fecha_inicio, fecha_fin])

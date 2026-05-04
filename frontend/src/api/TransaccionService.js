@@ -5,8 +5,8 @@ export const transaccionService = {
         const response = await api.get('transaccion/Transacciones/');
         return response.data
     },
-    getSobreTransacction: async (sobre_id, fecha_inicio, fecha_fin) => {
-        const response = await api.get('transaccion/Transacciones/?sobre_id='+sobre_id+'&fecha_inicio='+fecha_inicio+'&fecha_fin='+ fecha_fin);
+    getSobreTransacction: async ( fecha_inicio, fecha_fin) => {
+        const response = await api.get('transaccion/Transacciones/?fecha_inicio='+fecha_inicio+'&fecha_fin='+ fecha_fin);
         return response.data
     }
 }
