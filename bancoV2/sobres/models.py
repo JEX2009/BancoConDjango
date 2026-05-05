@@ -25,6 +25,7 @@ class Sobres(models.Model):
         
     def registrar_movimientos(self, monto, tipo, descripcion=""):
         with transaction.atomic():
+            monto = Decimal(str(monto))
             sobre=  Sobres.objects.select_for_update().get(pk=self.pk)
             if tipo == Transaccion.Estados.RETIRO:
                 if sobre.saldo < monto:
@@ -110,6 +111,29 @@ class Sobres(models.Model):
                 descripcion=f"Se retiraron  ₡{monto_decimal} del sobre {sobre.nombre}"
             )
             return {sobre.nombre: monto_decimal}    
+
+    @classmethod
+    def prestamo(cls, monto_egresar, origen, destino,usuario):
+        with transaction.atomic():
+            origen = cls.objects.select_for_update().get(id=origen, usuario=usuario)
+            destino = cls.objects.select_for_update().get(id=destino, usuario=usuario)
+
+            monto_decimal = Decimal(str(monto_egresar))
+
+            if origen.saldo < monto_decimal:
+                raise ValueError("Saldo insuficiente en el sobre de origen para realizar el préstamo")
+
+            origen.registrar_movimientos(
+                monto=monto_decimal,
+                tipo=Transaccion.Estados.RETIRO,
+                descripcion=f"Se prestó  ₡{monto_decimal} del sobre {origen.nombre}"
+            )
+            destino.registrar_movimientos(
+                monto=monto_decimal,
+                tipo=Transaccion.Estados.PRESTAMO,
+                descripcion=f"Se recibió  ₡{monto_decimal} del sobre {origen.nombre}"
+            )
+            return {destino.nombre: monto_decimal}
 
     def __str__(self):
         nombre_usuario = self.usuario.username if self.usuario else "Sin asignar"
