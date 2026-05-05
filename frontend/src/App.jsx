@@ -16,7 +16,9 @@ export default function App() {
   const [autenticado, setAutenticado] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const { datosGet, cargandoGet, errorGet, getSobres, cargandoPost, errorPost, exitoPost, postSobres, cargandoPut, errorPut, exitoPut, putSobre, exitoDel, cargandoDel, errorDel, del, exitoReactivar, cargandoReactivar, errorReactivar, reactivar } = useSobres();
+  const { datosGet, cargandoGet, errorGet, getSobres, cargandoPost, errorPost, exitoPost, postSobres, cargandoPut,
+    errorPut, exitoPut, putSobre, exitoDel, cargandoDel, errorDel, del,
+    exitoReactivar, cargandoReactivar, errorReactivar, reactivar } = useSobres();
   useEffect(() => {
     const checkAuth = async () => {
       try {
@@ -73,9 +75,12 @@ export default function App() {
         <Route path="/Reparto-Masivo" element={<Reparto_Masivo
           autenticado={autenticado}
         />} />
-        <Route path="/Prestamos-Sobres" element={<Prestamo
-          autenticado={autenticado}
-        />} />
+        <Route path="/Prestamos-Sobres" element={
+          <Prestamo
+            autenticado={autenticado}
+            sobres={datosGet}
+          />
+        } />
         <Route element={<ProtectedRoute autenticado={autenticado} loading={loading} />}>
         </Route>
       </Route>
