@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import ErrorMessage from '../../components/ErrorMessage';
 import Toast from '../../components/Toast';
-import { useForm } from 'react-hook-form';
+import { set, useForm } from 'react-hook-form';
 import { sobreService } from '../../api/SobreService';
 import useCreate from '../../hooks/useCreate';
+import Layout from '../../layout/Layout';
 
 export default function Reparto_Masivo({ autenticado }) {
     const { cargandoPost, errorPost, exitoPost, post } = useCreate(sobreService.repartir);
@@ -28,40 +29,30 @@ export default function Reparto_Masivo({ autenticado }) {
     const onSubmit = async (data) => {
         setDesglose(null);
         const apiRespuesta = await post(data);
-        if (apiRespuesta && apiRespuesta.respuesta_visual) {
-            setDesglose(apiRespuesta.respuesta_visual);
+        console.log(apiRespuesta);
+        if (errorPost) {
+            setToastConfig({ message: "Error al procesar el reparto", type: "error" });
+        } else {
+            setToastConfig({ message: "Reparto global ejecutado con éxito", type: "success" });
+            setDesglose(apiRespuesta);
         }
     };
 
+
     return (
-        <div className="max-w-2xl mx-auto py-12 px-4">
-            <Toast
-                message={toastConfig.message}
-                type={toastConfig.type}
-                setInformation={(val) => setToastConfig({ ...toastConfig, message: val })}
-            />
-            <div className="mb-10 flex justify-between items-end">
-
-                <div className="flex items-center space-x-4 mb-10">
-                    <div>
-                        <h2 className="text-3xl font-black text-gray-800 tracking-tighter">Reparto Global</h2>
-                        <p className="text-gray-400 font-medium text-sm">Distribución automática</p>
-                    </div>
-                </div>
-
-            </div>
-
-            {autenticado === false && (
-                <div className="mb-6 p-4 bg-amber-50 border border-amber-100 rounded-2xl">
-                    <p className="text-amber-600 text-xs font-medium text-center">
-                        Si no hay una sesión activa no se podrá repartir dinero entre los sobres.
-                    </p>
-                </div>
-            )}
-
-            <div className="bg-white rounded-[40px] p-10 shadow-sm border border-gray-100">
-
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+        <Layout
+            nombre="Reparto Global"
+            descripcion="Distribución automática de fondos entre tus sobres activos según los porcentajes configurados"
+            autenticado={autenticado}
+            accionAutenticado={"no se podra repartir"}
+        >
+            <div className="max-w-2xl mx-auto py-12 px-4">
+                <Toast
+                    message={toastConfig.message}
+                    type={toastConfig.type}
+                    setInformation={(val) => setToastConfig({ ...toastConfig, message: val })}
+                />
+                <form onSubmit={handleSubmit(onSubmit)} className="bg-white rounded-[40px] p-10 shadow-sm border border-gray-100">
                     <div className="space-y-3">
                         <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] ml-1">
                             Monto a repartir entre todos los sobres
@@ -92,6 +83,8 @@ export default function Reparto_Masivo({ autenticado }) {
                         )}
                     </div>
 
+
+
                     {desglose && (
                         <div className="animate-in fade-in slide-in-from-top-2 duration-500 bg-indigo-50/30 rounded-3xl p-6 border border-indigo-50">
                             <h3 className="text-[10px] font-black text-indigo-400 uppercase tracking-widest mb-4 ml-1">Resultados del reparto</h3>
@@ -110,28 +103,30 @@ export default function Reparto_Masivo({ autenticado }) {
                         Este monto se distribuirá automáticamente entre tus sobres activos basándose en los
                         <span className="text-indigo-500 font-bold"> porcentajes configurados</span>.
                     </p>
-
-                    <button
-                        type="submit"
-                        disabled={!autenticado || cargandoPost}
-                        className={`w-full py-5 rounded-[24px] font-black uppercase text-[11px] tracking-[0.2em] transition-all transform active:scale-[0.98] flex items-center justify-center space-x-3 ${cargandoPost
-                            ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                            : "bg-indigo-600 text-white shadow-xl shadow-indigo-100 hover:bg-indigo-700"
-                            }`}
-                    >
-                        {cargandoPost ? (
-                            <>
-                                <div className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
-                                <span>Procesando...</span>
-                            </>
-                        ) : (
-                            <span>Ejecutar Reparto Masivo</span>
-                        )}
-                    </button>
+                    {autenticado && (
+                        <button
+                            type="submit"
+                            disabled={!autenticado || cargandoPost}
+                            className={`w-full py-5 rounded-[24px] font-black uppercase text-[11px] tracking-[0.2em] transition-all transform active:scale-[0.98] flex items-center justify-center space-x-3 ${cargandoPost
+                                ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                                : "bg-indigo-600 text-white shadow-xl shadow-indigo-100 hover:bg-indigo-700"
+                                }`}
+                        >
+                            {cargandoPost ? (
+                                <>
+                                    <div className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
+                                    <span>Procesando...</span>
+                                </>
+                            ) : (
+                                <span>Ejecutar Reparto Masivo</span>
+                            )}
+                        </button>
+                    )}
                 </form>
             </div>
 
             {errorPost != "" && <ErrorMessage message={errorPost} />}
-        </div>
+
+        </Layout>
     );
 }

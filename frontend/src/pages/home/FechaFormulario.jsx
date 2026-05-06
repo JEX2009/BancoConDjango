@@ -1,21 +1,19 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 
-// Componente modular para el input de fecha
 const FechaInput = ({ label, name, register, error, validation }) => {
     return (
-        <div className="flex flex-col gap-1.5">
-            <label htmlFor={name} className="text-sm font-medium text-gray-700">
+        <div className="flex flex-col space-y-2 w-full">
+            <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest ml-1">
                 {label}
             </label>
             <input
-                id={name}
                 type="date"
                 {...register(name, validation)}
-                className="w-full px-3 py-2 text-sm text-gray-900 bg-gray-50/50 rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-4 focus:ring-purple-500/5 focus:border-purple-500 outline-none font-semibold text-sm text-gray-700 transition-all placeholder:text-gray-300"
             />
             {error && (
-                <span className="text-xs font-medium text-red-500 mt-0.5">
+                <span className="text-[9px] font-semibold text-red-500 mt-1 ml-1">
                     {error.message || 'Este campo es requerido'}
                 </span>
             )}
@@ -23,7 +21,7 @@ const FechaInput = ({ label, name, register, error, validation }) => {
     );
 };
 
-export default function FechaFormulario({ cargandoRegistrosSobre, masRegistros }) {
+export default function FechaFormulario({ cargandoRegistrosSobre, masRegistros,setConsultando }) {
     const {
         register,
         handleSubmit,
@@ -32,46 +30,30 @@ export default function FechaFormulario({ cargandoRegistrosSobre, masRegistros }
     } = useForm();
 
     const onSubmit = (data) => {
-        const inicio = typeof fechaInicio === 'object'
-            ? fechaInicio?.target?.value || fechaInicio?.value || ''
-            : fechaInicio;
-
-        const fin = typeof fechaFin === 'object'
-            ? fechaFin?.target?.value || fechaFin?.value || ''
-            : fechaFin;
-        masRegistros(inicio, fin);
+        masRegistros(data.fechaInicio, data.fechaFin);
+        setConsultando(true);
     };
 
-    // Validación de la fecha de inicio en relación con la de fin
     const validateFechaInicio = (value) => {
         const fechaFin = watch('fechaFin');
         if (fechaFin && value > fechaFin) {
-            return 'La fecha de inicio debe ser anterior a la fecha de fin.';
+            return 'Debe ser anterior a la fecha de fin.';
         }
         return true;
     };
 
-    // Validación de la fecha de fin
     const validateFechaFin = (value) => {
         const fechaInicio = watch('fechaInicio');
         if (fechaInicio && value < fechaInicio) {
-            return 'La fecha de fin debe ser posterior a la fecha de inicio.';
+            return 'Debe ser posterior a la fecha de inicio.';
         }
         return true;
     };
 
     return (
-        <div className="flex  bg-gray-50/50 p-6">
-            <form
-                onSubmit={handleSubmit(onSubmit)}
-            >
-                <div className="space-y-1 text-center sm:text-left">
-                    <h2 className="text-lg font-semibold text-gray-900 tracking-tight">
-                        Filtrar por Rango de Fechas
-                    </h2>
-                </div>
-
-                <div className="flex mt-2 gap-4">
+        <div className="w-full mb-8 bg-white border border-gray-100/80 p-8 rounded-3xl shadow-2xl shadow-gray-200/40">
+            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col md:flex-row items-end gap-6">
+                <div className="flex flex-col md:flex-row gap-6 w-full md:flex-1">
                     <FechaInput
                         label="Fecha de Inicio"
                         name="fechaInicio"
@@ -82,7 +64,7 @@ export default function FechaFormulario({ cargandoRegistrosSobre, masRegistros }
                             validate: validateFechaInicio,
                         }}
                     />
-
+                    
                     <FechaInput
                         label="Fecha de Fin"
                         name="fechaFin"
@@ -93,15 +75,15 @@ export default function FechaFormulario({ cargandoRegistrosSobre, masRegistros }
                             validate: validateFechaFin,
                         }}
                     />
-                    <button
-                        type='submit'
-                        onClick={masRegistros}
-                        className="px-6 py-3 bg-gray-900 text-white rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] hover:bg-black transition-all shadow-lg shadow-gray-200"
-                    >
-                        {cargandoRegistrosSobre ? "Cargando..." : "Aplicar Filtros"}
-                    </button>
                 </div>
 
+                <button
+                    type="submit"
+                    disabled={cargandoRegistrosSobre}
+                    className="w-full md:w-auto px-8 py-4 bg-purple-600 text-white font-extrabold uppercase text-xs tracking-widest rounded-2xl hover:bg-purple-700 active:scale-[0.98] transition-all shadow-xl shadow-purple-200/50 disabled:bg-gray-100 disabled:text-gray-400 disabled:shadow-none cursor-pointer whitespace-nowrap"
+                >
+                    {cargandoRegistrosSobre ? 'Cargando...' : 'Aplicar Filtros'}
+                </button>
             </form>
         </div>
     );

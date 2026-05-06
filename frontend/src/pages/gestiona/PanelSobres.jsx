@@ -6,36 +6,37 @@ import { useForm } from 'react-hook-form';
 import { sobreService } from '../../api/SobreService';
 import useCreate from '../../hooks/useCreate';
 import Toast from '../../components/Toast';
+import Layout from '../../layout/Layout';
 
 export default function PanelSobres({ autenticado, datosGet, cargandoGet, errorGet, getSobres }) {
-    
+
     useEffect(() => {
         getSobres();
     }, []);
 
     const { cargandoPost, errorPost, exitoPost, post } = useCreate(sobreService.ingreso_egreso);
 
-    const { 
-        register: regIngreso, 
-        handleSubmit: handleIngreso, 
-        control: controlIngreso, 
-        reset: resetIngreso, 
-        formState: { isDirty: estaIngresando } 
+    const {
+        register: regIngreso,
+        handleSubmit: handleIngreso,
+        control: controlIngreso,
+        reset: resetIngreso,
+        formState: { isDirty: estaIngresando }
     } = useForm({ defaultValues: { sobre: '', monto: '' } });
 
-    const { 
-        register: regRetiro, 
-        handleSubmit: handleRetiro, 
-        control: controlRetiro, 
-        reset: resetRetiro, 
-        formState: { isDirty: estaRetirando } 
+    const {
+        register: regRetiro,
+        handleSubmit: handleRetiro,
+        control: controlRetiro,
+        reset: resetRetiro,
+        formState: { isDirty: estaRetirando }
     } = useForm({ defaultValues: { sobre: '', monto: '' } });
 
     useEffect(() => {
         if (exitoPost) {
             resetIngreso();
             resetRetiro();
-            getSobres(); 
+            getSobres();
         }
     }, [exitoPost]);
 
@@ -67,7 +68,12 @@ export default function PanelSobres({ autenticado, datosGet, cargandoGet, errorG
         }));
 
     return (
-        <>
+        <Layout
+            nombre="Gestión de Fondos"
+            descripcion="Administra tus movimientos con precisión y mantén tus finanzas organizadas"
+            autenticado={autenticado}
+            accionAutenticado = {"no se podra ni ingresar ni retirar"}
+        >
             {/* Feedback de carga para el POST */}
             {cargandoPost && (
                 <div className="fixed inset-0 bg-white/60 backdrop-blur-sm z-50 flex items-center justify-center">
@@ -78,32 +84,18 @@ export default function PanelSobres({ autenticado, datosGet, cargandoGet, errorG
             {/* Notificaciones de Éxito o Error */}
             {exitoPost && <Toast message="Operación realizada con éxito" type="success" />}
             {errorPost && (
-                <Toast 
-                    message={typeof errorPost === 'object' ? (errorPost.error || "Error de validación") : errorPost} 
-                    type="error" 
+                <Toast
+                    message={typeof errorPost === 'object' ? (errorPost.error || "Error de validación") : errorPost}
+                    type="error"
                 />
             )}
 
             <div className="max-w-6xl mx-auto px-4 py-12">
-                <div className="mb-12 ml-2">
-                    <h1 className="text-3xl font-black text-gray-700 tracking-tighter">Gestión de Fondos</h1>
-                    <p className="text-gray-400 font-medium">Administra tus movimientos con precisión</p>
-                    
-                    {!autenticado && (
-                        <div className="mt-4 p-4 bg-amber-50 border border-amber-100 rounded-2xl">
-                            <p className="text-amber-600 text-xs font-medium text-center">
-                                Si no hay una sesión activa no se podrá gestionar el dinero de los sobres.
-                            </p>
-                        </div>
-                    )}
-                </div>
-
                 <div className="grid lg:grid-cols-2 gap-10 items-start">
-                    
+
                     {/* PANEL IZQUIERDO: INGRESAR */}
-                    <div className={`transition-all duration-500 bg-white rounded-[40px] p-10 shadow-sm border border-gray-100 ${
-                        estaRetirando || cargandoPost ? "opacity-20 grayscale pointer-events-none scale-[0.97]" : "opacity-100"
-                    }`}>
+                    <div className={`transition-all duration-500 bg-white rounded-[40px] p-10 shadow-sm border border-gray-100 ${estaRetirando || cargandoPost ? "opacity-20 grayscale pointer-events-none scale-[0.97]" : "opacity-100"
+                        }`}>
                         <div className="flex justify-between items-start mb-10">
                             <div className="flex items-center space-x-4">
                                 <div className="w-12 h-12 bg-purple-50 rounded-2xl flex items-center justify-center">
@@ -143,20 +135,24 @@ export default function PanelSobres({ autenticado, datosGet, cargandoGet, errorG
                                     />
                                 </div>
                             </div>
-
-                            <button 
-                                disabled={cargandoPost}
-                                className="w-full py-5 bg-purple-600 text-white rounded-[24px] font-black uppercase text-[11px] tracking-[0.2em] hover:bg-purple-700 transition-all shadow-xl shadow-purple-100 disabled:bg-gray-300"
-                            >
-                                {cargandoPost ? 'Procesando...' : 'Confirmar Depósito'}
-                            </button>
+                            {autenticado ? (
+                                <button
+                                    disabled={cargandoPost}
+                                    className="w-full py-5 bg-purple-600 text-white rounded-[24px] font-black uppercase text-[11px] tracking-[0.2em] hover:bg-purple-700 transition-all shadow-xl shadow-purple-100 disabled:bg-gray-300"
+                                >
+                                    {cargandoPost ? 'Procesando...' : 'Confirmar Depósito'}
+                                </button>
+                            ) : (
+                                <p className="text-amber-600 text-xs font-medium text-center">
+                                    Si no hay una sesión activa no se podrá ingresar
+                                </p>
+                            )}
                         </form>
                     </div>
 
                     {/* PANEL DERECHO: RETIRAR */}
-                    <div className={`transition-all duration-500 bg-white rounded-[40px] p-10 shadow-sm border border-gray-100 ${
-                        estaIngresando || cargandoPost ? "opacity-20 grayscale pointer-events-none scale-[0.97]" : "opacity-100"
-                    }`}>
+                    <div className={`transition-all duration-500 bg-white rounded-[40px] p-10 shadow-sm border border-gray-100 ${estaIngresando || cargandoPost ? "opacity-20 grayscale pointer-events-none scale-[0.97]" : "opacity-100"
+                        }`}>
                         <div className="flex justify-between items-start mb-10">
                             <div className="flex items-center space-x-4">
                                 <div className="w-12 h-12 bg-red-50 rounded-2xl flex items-center justify-center">
@@ -196,18 +192,23 @@ export default function PanelSobres({ autenticado, datosGet, cargandoGet, errorG
                                     />
                                 </div>
                             </div>
-
-                            <button 
-                                disabled={cargandoPost}
-                                className="w-full py-5 bg-gray-900 text-white rounded-[24px] font-black uppercase text-[11px] tracking-[0.2em] hover:bg-black transition-all shadow-xl shadow-gray-100 disabled:bg-gray-300"
-                            >
-                                {cargandoPost ? 'Procesando...' : 'Confirmar Retiro'}
-                            </button>
+                            {autenticado ? (
+                                <button
+                                    disabled={cargandoPost}
+                                    className="w-full py-5 bg-gray-900 text-white rounded-[24px] font-black uppercase text-[11px] tracking-[0.2em] hover:bg-black transition-all shadow-xl shadow-gray-100 disabled:bg-gray-300"
+                                >
+                                    {cargandoPost ? 'Procesando...' : 'Confirmar Retiro'}
+                                </button>
+                            ) : (
+                                <p className="text-amber-600 text-xs font-medium text-center">
+                                    Si no hay una sesión activa no se podrá retirar
+                                </p>
+                            )}
                         </form>
                     </div>
 
                 </div>
             </div>
-        </>
+        </Layout>
     );
 }

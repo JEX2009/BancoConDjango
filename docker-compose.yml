@@ -31,5 +31,16 @@ services:
       db:
         condition: service_healthy
 
+  web-frontend:
+    build: ./frontend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - "5173:5173"
+    environment:
+      - REACT_APP_API_URL=http://localhost:8000/api
+    command: npm run dev -- --host
+
 volumes:
   postgres_data:

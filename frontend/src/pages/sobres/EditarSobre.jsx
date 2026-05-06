@@ -2,22 +2,22 @@ import { useForm } from "react-hook-form";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import ErrorMessage from "../../components/ErrorMessage";
 
-export default function FormularioSobre({ cargandoPut,errorPut,putSobre,cerrarModal,setInformacion,sobre }) {
+export default function FormularioSobre({ cargandoPut, errorPut, putSobre, cerrarModal, setInformacion, sobre }) {
     const { register, handleSubmit, formState: { errors }, reset } = useForm({
-        defaultValues:{
-            nombre:sobre.nombre,
-            porcentaje:sobre.porcentaje,
-            limite:sobre.limite
+        defaultValues: {
+            nombre: sobre.nombre,
+            porcentaje: sobre.porcentaje,
+            limite: sobre.limite
         }
     });
 
     const enviar = async (data) => {
-        await putSobre(sobre.id,data);
-        if (!errorPut) {
-            setInformacion("Se modifico el sobre "+ sobre.nombre +" con exito");
-            cerrarModal();
-        } else {
+        await putSobre(sobre.id, data);
+        if (errorPut) {
+            setInformacion("Error al modificar el sobre " + sobre.nombre);
             reset();
+        } else {
+            cerrarModal();
         };
     };
 
@@ -59,9 +59,19 @@ export default function FormularioSobre({ cargandoPut,errorPut,putSobre,cerrarMo
                         <input
                             type="number"
                             {...register("limite", {
-                                required: "Define un límite", min: { value: 0, message: "Mínimo 0" },
+                                required: "Define un límite",
+                                min: { value: 0, message: "Mínimo 0" },
                                 valueAsNumber: true,
-                                validate: (value) =>  parseFloat(sobre.saldo) <  parseFloat(value) || "El límite no puede ser menor ni igual al saldo actual"
+                                validate: (value) => {
+                                    const numValue = parseFloat(value);
+                                    const numSaldo = parseFloat(sobre?.saldo || 0);
+
+                                    if (numValue === 0) {
+                                        return true;
+                                    }
+
+                                    return numValue > numSaldo || "El límite no puede ser menor ni igual al saldo actual";
+                                }
                             })}
                             placeholder="₡ Límite"
                             className={ClaseIngreso(errors.limite)}
